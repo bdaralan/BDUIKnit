@@ -11,20 +11,19 @@ import SwiftUI
 /// A tray view that can expand and collapse.
 ///
 /// The tray can contain many item buttons and has one main button.
+///
+/// The intended use case is to pin it to the bottom-trailing of the home page.
 public struct BDButtonTrayView: View {
     
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Environment(\.layoutDirection) private var layoutDirection
     
     @ObservedObject var viewModel: BDButtonTrayViewModel
-    
     @ObservedObject var configuration: BDButtonTrayConfiguration
     
-    let itemSpacing: CGFloat = 40
-    
-    let itemSize: CGSize = .init(width: 30, height: 30)
-    
     let trayDiameter: CGFloat = 60
+    let itemSpacing: CGFloat = 40
+    let itemSize: CGSize = .init(width: 30, height: 30)
     
     var showMainItems: Bool {
         viewModel.subitems.isEmpty
@@ -49,6 +48,7 @@ public struct BDButtonTrayView: View {
         self.viewModel = viewModel
         self.configuration = configuration ?? .init()
     }
+    
     
     // MARK: Main Body
     
@@ -189,6 +189,7 @@ extension BDButtonTrayView {
         viewModel.expanded = willExpand
     }
 }
+
 
 // MARK: - Tray Item Buttons
 

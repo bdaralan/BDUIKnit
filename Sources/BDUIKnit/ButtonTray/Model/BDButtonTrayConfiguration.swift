@@ -12,7 +12,7 @@ import SwiftUI
 ///
 /// - Note: When want to update the UI after it is already displayed, call `objectWillChange.send()`.
 ///
-public class BDButtonTrayConfiguration: ObservableObject {
+public final class BDButtonTrayConfiguration: ObservableObject {
     
     // MARK: Property
     
@@ -58,6 +58,7 @@ public class BDButtonTrayConfiguration: ObservableObject {
     /// Tell the view to apply the changes.
     ///
     /// Use this method when want to make changes after the view is already appeared.
+    /// This is the same as calling `objectWillChange.send()`.
     func apply() {
         objectWillChange.send()
     }

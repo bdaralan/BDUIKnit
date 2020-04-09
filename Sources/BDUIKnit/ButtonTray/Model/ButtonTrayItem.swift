@@ -9,7 +9,7 @@ import Foundation
 
 
 /// An item to display in `BDButtonTrayView`.
-public class BDButtonTrayItem: ObservableObject, Identifiable {
+public final class BDButtonTrayItem: ObservableObject, Identifiable {
     
     // MARK: Property
     

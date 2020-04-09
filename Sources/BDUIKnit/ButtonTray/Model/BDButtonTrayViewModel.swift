@@ -9,7 +9,7 @@ import Foundation
 
 
 /// The view model of `BDButtonTrayView`.
-public class BDButtonTrayViewModel: ObservableObject {
+public final class BDButtonTrayViewModel: ObservableObject {
     
     // MARK: Property
     
