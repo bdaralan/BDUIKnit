@@ -24,7 +24,7 @@ extension Color {
     /// - If the hex is invalid, the famous red is created with a warning message.
     ///
     /// - Parameter hex: Example: `BDA12A` or `#BDA12A`.
-    public init(_ hex: String) {
+    public init(hex: String) {
         // hope no one accidentally passes in a 49-million-character string to filter 😅
         let validHex = hex.filter({ Color.validHex.contains($0) })
         
