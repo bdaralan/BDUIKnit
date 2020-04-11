@@ -14,5 +14,5 @@ BDUIKnit is a collection of SwiftUI custom UI Components and extensions.
 - [ ] Add a quick how-to for all of them.
 - [x] Add `ButtonTrayView`
 - [x] Add `Color` extensions
-- [ ] Add `ModalTextField`
+- [x] Add `ModalTextField`
 - [ ] Add `ModalTextView`
