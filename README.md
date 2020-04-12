@@ -1,6 +1,6 @@
 # BDUIKnit
 
-BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions.
+BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions packed in Swift Package Manager.
 
 ## Project Goals
 
@@ -18,23 +18,29 @@ BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions
 - [x] Add `ModalTextField`
 - [ ] Add `ModalTextView`
 
-## UI Preview
+## Get Started
+
+### Install BDUIKnit
+
+- Open your project in Xcode
+- Go to `File > Swift Packages > Add Package Dependency...`
+- Search for *BDUIKnit* and follow Xcode's installation dialog.
 
 ### Quick Introduction
 
-Most of the UI components are following **MVVM** design pattern; so, there will always be **Views** and their corresponding **View Models**. Some view model has UI customization properties. Others are extracted out to a configuration object. Not all view models are `class`, some of them are `struct`.
+Most of the UI components are following **MVVM** design pattern; so, there will always be **Views** and their corresponding **View Models**. Some view model has UI customization properties. Others are extracted out to a configuration object. Not all view models are `class`, some of them are `struct`. So, use `@ObservedObject`, `@State`, or `@Binding` as needed.
 
-### `BDButtonTrayView`
+### BDButtonTrayView
 
 A tray-like view that is normally pinned to the bottom-trailing of a scene.
 
 ![BDButtonTrayPreview-1][button-tray-preview]
 
-<p align="center"><small>Regular Vertical Size Class</small></p>
+<p class="image-caption-center">Regular Vertical Size Class</p>
 
 ![BDButtonTrayPreview-2][button-tray-preview-horizontal]
 
-<p align="center"><small>Compact Vertical Size Class</small></p>
+<p class="image-caption-center">Compact Vertical Size Class</p>
 
 *Get Started:*
 
@@ -43,9 +49,9 @@ A tray-like view that is normally pinned to the bottom-trailing of a scene.
 - `BDButtonTrayConfiguration`
 - `BDButtonTrayItem`
 
-For sample code, see [`ButtonTrayViewPreview`](https://github.com/iDara09/BDUIKnitProject/blob/master/BDUIKnitProject/ButtonTrayViewPreview.swift)
+For sample code, see [`ButtonTrayViewPreview`][ButtonTrayViewPreview.swift]
 
-### `BDModalTextField`
+### BDModalTextField
 
 A modal text field intended to be used as a presentation sheet when need to get input from user.
 
@@ -54,9 +60,15 @@ A modal text field intended to be used as a presentation sheet when need to get 
 *Get Started:*
 
 - `BDModalTextField`
-- `BDModelTextFieldModel`
+- `BDModalTextFieldModel`
 
-For sample code, see [`ModalTextFieldPreview`](https://github.com/iDara09/BDUIKnitProject/blob/master/BDUIKnitProject/ModalTextFieldPreview.swift)
+For sample code, see [`ModalTextFieldPreview`][ModalTextFieldPreview.swift]
+
+<!-- Preview File Link -->
+
+[ButtonTrayViewPreview.swift]: https://github.com/iDara09/BDUIKnitProject/blob/master/BDUIKnitProject/ButtonTrayViewPreview.swift
+
+[ModalTextFieldPreview.swift]: https://github.com/iDara09/BDUIKnitProject/blob/master/BDUIKnitProject/ModalTextFieldPreview.swift
 
 <!-- Preview Image Link -->
 
@@ -65,3 +77,14 @@ For sample code, see [`ModalTextFieldPreview`](https://github.com/iDara09/BDUIKn
 [button-tray-preview-horizontal]: https://drive.google.com/uc?id=14He_C4QiDxDA7a4YBwrCeXYBPWdGLDjg
 
 [modal-text-field-preview]: https://drive.google.com/uc?id=1sy3BwKuUSNtIKvuuvGwDPXtsavWRVMfr
+
+<!-- CSS -->
+
+<style>
+
+.image-caption-center {
+    text-align: center;
+    font-size: small;
+}
+
+</style>
