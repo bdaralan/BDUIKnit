@@ -82,8 +82,8 @@ For sample code, see [`ModalTextFieldPreview`][ModalTextFieldPreview.swift]
 
 <!-- Preview Image Link -->
 
-[button-tray-preview]: https://drive.google.com/uc?id=1By9KpfGEFXDeb4pjxoIIE82GEnyDDXWg
+[button-tray-preview]: https://user-images.githubusercontent.com/21166606/79085623-2307dd00-7cee-11ea-8732-b3ef96836f78.png
 
-[button-tray-preview-horizontal]: https://drive.google.com/uc?id=14He_C4QiDxDA7a4YBwrCeXYBPWdGLDjg
+[button-tray-preview-horizontal]: https://user-images.githubusercontent.com/21166606/79085566-ee942100-7ced-11ea-8d09-10eac91fac7d.png
 
-[modal-text-field-preview]: https://drive.google.com/uc?id=1sy3BwKuUSNtIKvuuvGwDPXtsavWRVMfr
+[modal-text-field-preview]: https://user-images.githubusercontent.com/21166606/79085645-37e47080-7cee-11ea-9d90-b73510e4506d.png
