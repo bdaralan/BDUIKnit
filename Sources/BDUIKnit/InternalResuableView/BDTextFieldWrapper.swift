@@ -70,6 +70,10 @@ struct BDTextFieldWrapper: UIViewRepresentable {
             
             self.wrapper = wrapper
             
+            // safeguard in case developer try to set delegate when using configure method
+            // since the wrapper rely on the internal delegate implementation
+            textField.delegate = self
+            
             textField.keyboardType = wrapper.keyboardType
             textField.returnKeyType = wrapper.returnKeyType
             

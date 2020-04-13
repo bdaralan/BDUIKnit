@@ -52,6 +52,12 @@ extension Color {
         
         self.init(red: red / 255, green: green / 255, blue: blue / 255)
     }
+    
+    /// Create a random color.
+    /// - Returns: A random color.
+    public static func random() -> Color {
+        Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
+    }
 }
 
 

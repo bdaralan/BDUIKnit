@@ -9,6 +9,7 @@ import SwiftUI
 
 
 /// A view representation of the `BDButtonTrayItem` and displayed in `BDButtonTrayView`.
+///
 struct BDButtonTrayItemView: View {
     
     @ObservedObject var item: BDButtonTrayItem

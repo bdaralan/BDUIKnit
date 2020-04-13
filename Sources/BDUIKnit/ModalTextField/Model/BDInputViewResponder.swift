@@ -9,6 +9,7 @@ import UIKit
 
 
 /// A convenient protocol for handling input view's first responder in `UIViewRepresentable`.
+///
 protocol BDInputViewResponder {}
 
 

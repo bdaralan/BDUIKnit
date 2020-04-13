@@ -9,6 +9,7 @@ import SwiftUI
 
 
 /// A view model for `BDModalTextField`.
+///
 public struct BDModalTextFieldModel {
     
     // MARK: Property

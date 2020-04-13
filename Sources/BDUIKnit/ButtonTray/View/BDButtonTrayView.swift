@@ -8,18 +8,16 @@
 import SwiftUI
 
 
-/// A tray view that can expand and collapse.
+/// A tray-like view that is normally pinned to the bottom-trailing of a scene.
 ///
 /// The tray can contain many item buttons and has one main button.
 ///
-/// The intended use case is to pin it to the bottom-trailing of the home page.
 public struct BDButtonTrayView: View {
     
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Environment(\.layoutDirection) private var layoutDirection
     
     @ObservedObject var viewModel: BDButtonTrayViewModel
-    @ObservedObject var configuration: BDButtonTrayConfiguration
     
     let trayDiameter: CGFloat = 60
     let itemSpacing: CGFloat = 40
@@ -34,19 +32,18 @@ public struct BDButtonTrayView: View {
     }
     
     var itemActiveColor: Color {
-        showMainItems ? configuration.itemActiveColor : configuration.subitemActiveColor
+        showMainItems ? viewModel.itemActiveColor : viewModel.subitemActiveColor
     }
     
     var itemInactiveColor: Color {
-        showMainItems ? configuration.itemInactiveColor : configuration.subitemInactiveColor
+        showMainItems ? viewModel.itemInactiveColor : viewModel.subitemInactiveColor
     }
     
     
     // MARK: Constructor
     
-    public init(viewModel: BDButtonTrayViewModel, configuration: BDButtonTrayConfiguration? = nil) {
+    public init(viewModel: BDButtonTrayViewModel) {
         self.viewModel = viewModel
-        self.configuration = configuration ?? .init()
     }
     
     
@@ -89,9 +86,9 @@ public struct BDButtonTrayView: View {
             }
         }
         .frame(minWidth: trayDiameter, maxWidth: trayDiameter, minHeight: trayDiameter)
-        .background(configuration.trayColor)
+        .background(viewModel.trayColor)
         .cornerRadius(trayDiameter / 2)
-        .shadow(color: configuration.trayShadowColor, radius: 6, x: 0, y: 3)
+        .shadow(color: viewModel.trayShadowColor, radius: 6, x: 0, y: 3)
         .overlay(mainButton, alignment: .bottom)
         .overlay(verticalTrayItemLabels, alignment: .bottomTrailing)
         .animation(.spring())
@@ -126,9 +123,9 @@ public struct BDButtonTrayView: View {
             }
         }
         .frame(minWidth: trayDiameter, minHeight: trayDiameter, maxHeight: trayDiameter)
-        .background(configuration.trayColor)
+        .background(viewModel.trayColor)
         .cornerRadius(trayDiameter / 2)
-        .shadow(color: configuration.trayShadowColor, radius: 6, x: 0, y: 3)
+        .shadow(color: viewModel.trayShadowColor, radius: 6, x: 0, y: 3)
         .overlay(mainButton, alignment: .trailing)
         .animation(.spring())
     }
@@ -143,13 +140,13 @@ extension BDButtonTrayView {
         let diameter = trayDiameter + (viewModel.expanded ? 0 : 8)
         
         let background = Circle()
-            .fill(configuration.trayColor)
-            .shadow(color: configuration.trayShadowColor, radius: 6)
+            .fill(viewModel.trayColor)
+            .shadow(color: viewModel.trayShadowColor, radius: 6)
         
-        let imageColor = viewModel.expanded ? configuration.buttonInactiveColor : configuration.buttonActiveColor
+        let imageColor = viewModel.expanded ? viewModel.buttonInactiveColor : viewModel.buttonActiveColor
         
         return Button(action: handleMainButtonTapped) {
-            Image(systemName: configuration.buttonSystemImage)
+            Image(systemName: viewModel.buttonSystemImage)
                 .resizable()
                 .frame(width: 30, height: 30)
                 .foregroundColor(imageColor)
@@ -179,7 +176,7 @@ extension BDButtonTrayView {
                 .rotationEffect(.degrees(viewModel.expanded ? 180 : 0))
                 .animation(.spring())
                 .padding(padding)
-                .foregroundColor(configuration.expandIndicatorColor)
+                .foregroundColor(viewModel.expandIndicatorColor)
         }
     }
     
@@ -200,7 +197,7 @@ extension BDButtonTrayView {
             self.viewModel.subitems = []
         }
         let item = BDButtonTrayItem(title: "", systemImage: "xmark.circle", action: action)
-        let color = configuration.expandIndicatorColor
+        let color = viewModel.expandIndicatorColor
         return BDButtonTrayItemView(item: item, size: itemSize, activeColor: color, inactiveColor: color)
     }
     
@@ -221,9 +218,9 @@ extension BDButtonTrayView {
                         .fixedSize()
                         .padding(.horizontal, 16)
                         .foregroundColor(item.disabled ? self.itemInactiveColor : self.itemActiveColor)
-                        .background(self.configuration.trayColor)
+                        .background(self.viewModel.trayColor)
                         .cornerRadius(self.itemSize.height / 2)
-                        .shadow(color: self.configuration.trayShadowColor.opacity(0.5), radius: 3, x: 0, y: 0)
+                        .shadow(color: self.viewModel.trayShadowColor.opacity(0.5), radius: 3, x: 0, y: 0)
                         .opacity(item.title.isEmpty ? 0 : 1)
                         .animation(nil)
                         .onReceive(item.objectWillChange, perform: { _ in self.viewModel.objectWillChange.send() })
