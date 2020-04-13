@@ -76,9 +76,9 @@ For sample code, see [`ModalTextFieldPreview`][ModalTextFieldPreview.swift]
 
 <!-- Preview File Link -->
 
-[ButtonTrayViewPreview.swift]: https://github.com/iDara09/BDUIKnitProject/blob/master/BDUIKnitProject/ButtonTrayViewPreview.swift
+[ButtonTrayViewPreview.swift]: https://github.com/iDara09/BDUIKnitProject/blob/master/BDUIKnitProject/Preview/ButtonTrayViewPreview.swift
 
-[ModalTextFieldPreview.swift]: https://github.com/iDara09/BDUIKnitProject/blob/master/BDUIKnitProject/ModalTextFieldPreview.swift
+[ModalTextFieldPreview.swift]: https://github.com/iDara09/BDUIKnitProject/blob/master/BDUIKnitProject/Preview/ModalTextFieldPreview.swift
 
 <!-- Preview Image Link -->
 
