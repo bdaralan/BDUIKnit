@@ -58,7 +58,10 @@ struct BDTextViewWrapper: UIViewRepresentable {
             // since the wrapper rely on the internal delegate implementation
             textView.delegate = self
             
-            textView.text = wrapper.text
+            if textView.text != wrapper.text {
+                textView.text = wrapper.text
+            }
+            
             textView.isEditable = wrapper.isEditable
             
             if wrapper.isEditable {

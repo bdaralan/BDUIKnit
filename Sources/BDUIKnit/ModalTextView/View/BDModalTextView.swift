@@ -24,6 +24,7 @@ public struct BDModalTextView: View {
                 Text(viewModel.title)
                     .font(.largeTitle)
                     .bold()
+                    .foregroundColor(viewModel.titleColor)
                 Spacer()
                 Button(action: viewModel.onCommit ?? {}) {
                     Text("Done").bold()
@@ -39,13 +40,14 @@ public struct BDModalTextView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.vertical, 20)
         .padding(.horizontal)
-        .overlay(BDModalDragHandle(hideOnVerticalCompact: true).padding(.top, 8), alignment: .top)
+        .overlay(dragHandle.padding(.top, 8), alignment: .top)
     }
 }
 
 
-struct ModalTextView_Previews: PreviewProvider {
-    static var previews: some View {
-        BDModalTextView(viewModel: .constant(.init()))
+extension BDModalTextView {
+    
+    var dragHandle: some View {
+        BDModalDragHandle(color: viewModel.titleColor, hideOnVerticalCompact: true)
     }
 }

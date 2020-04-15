@@ -94,6 +94,14 @@ public struct BDModalTextField: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.vertical, 20)
-        .overlay(BDModalDragHandle(hideOnVerticalCompact: true).padding(.top, 8), alignment: .top)
+        .overlay(dragHandle.padding(.top, 8), alignment: .top)
+    }
+}
+
+
+extension BDModalTextField {
+    
+    var dragHandle: some View {
+        BDModalDragHandle(color: viewModel.titleColor, hideOnVerticalCompact: true)
     }
 }

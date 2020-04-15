@@ -5,7 +5,7 @@
 //  Created by Dara Beng on 1/20/20.
 //
 
-import UIKit
+import SwiftUI
 
 
 public struct BDModalTextViewModel {
@@ -31,6 +31,11 @@ public struct BDModalTextViewModel {
     ///
     /// Use this method to customize the text view to your heart's content. 👌
     public var configure: ((UITextView) -> Void)?
+    
+    
+    // MARK: UI
+    
+    public var titleColor: Color?
     
     
     // MARK: Constructor

@@ -10,6 +10,7 @@ BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions
   - [Quick Introduction](#quick-introduction)
   - [BDButtonTrayView](#bdbuttontrayview)
   - [BDModalTextField](#bdmodaltextfield)
+  - [BDModalTextView](#bdmodaltextview)
 
 ## Goals
 
@@ -20,12 +21,11 @@ BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions
 ## Todo
 
 - [ ] Gotta have a logo. σ(^_^;)
-- [ ] Add screenshots for every UI components.
-- [ ] Add a quick how-to for all of them.
 - [x] Add `ButtonTrayView`
 - [x] Add `Color` extensions
 - [x] Add `ModalTextField`
-- [ ] Add `ModalTextView`
+- [x] Add `ModalTextView`
+- [ ] Add more...
 
 ## Get Started
 
@@ -55,9 +55,9 @@ A tray-like view that is normally pinned to the bottom-trailing of a scene.
 
 **Quick Start:**
 
-- `BDButtonTrayView`
-- `BDButtonTrayViewModel`
-- `BDButtonTrayItem`
+- [`BDButtonTrayView`][BDButtonTrayView.swift]
+- [`BDButtonTrayViewModel`][BDButtonTrayViewModel.swift]
+- [`BDButtonTrayItem`][ButtonTrayItem.swift]
 
 For sample code, see [`ButtonTrayViewPreview`][ButtonTrayViewPreview.swift]
 
@@ -69,16 +69,47 @@ A text field view intended to be used as a modal presentation sheet when need to
 
 **Quick Start:**
 
-- `BDModalTextField`
-- `BDModalTextFieldModel`
+- [`BDModalTextField`][BDModalTextField.swift]
+- [`BDModalTextFieldModel`][BDModalTextFieldModel.swift]
 
 For sample code, see [`ModalTextFieldPreview`][ModalTextFieldPreview.swift]
+
+### BDModalTextView
+
+A text view intended to be used as a modal presentation sheet when need to get inputs from user.
+
+![BDModalTextViewPreview][modal-text-view-preview]
+
+**Quick Start:**
+
+- [`BDModalTextView`][BDModalTextView.swift]
+- [`BDModalTextViewModel`][BDModalTextViewModel.swift]
+
+For sample code, see [`ModalTextViewPreview`][ModalTextViewPreview.swift]
+
+<!-- BDUIKnit File Link -->
+
+[BDButtonTrayViewModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/Model/BDButtonTrayViewModel.swift
+
+[ButtonTrayItem.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/Model/ButtonTrayItem.swift
+
+[BDButtonTrayView.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/View/BDButtonTrayView.swift
+
+[BDModalTextFieldModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextField/Model/BDModalTextFieldModel.swift
+
+[BDModalTextField.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextField/View/BDModalTextField.swift
+
+[BDModalTextViewModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextView/Model/BDModalTextViewModel.swift
+
+[BDModalTextView.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextView/View/BDModalTextView.swift
 
 <!-- Preview File Link -->
 
 [ButtonTrayViewPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/ButtonTrayViewPreview.swift
 
 [ModalTextFieldPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/ModalTextFieldPreview.swift
+
+[ModalTextViewPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/ModalTextViewPreview.swift
 
 <!-- Preview Image Link -->
 
@@ -87,3 +118,5 @@ For sample code, see [`ModalTextFieldPreview`][ModalTextFieldPreview.swift]
 [button-tray-preview-horizontal]: https://user-images.githubusercontent.com/21166606/79085566-ee942100-7ced-11ea-8d09-10eac91fac7d.png
 
 [modal-text-field-preview]: https://user-images.githubusercontent.com/21166606/79085645-37e47080-7cee-11ea-9d90-b73510e4506d.png
+
+[modal-text-view-preview]: https://user-images.githubusercontent.com/21166606/79294399-efae8500-7e8a-11ea-80f3-1c9dff0eedbf.png
