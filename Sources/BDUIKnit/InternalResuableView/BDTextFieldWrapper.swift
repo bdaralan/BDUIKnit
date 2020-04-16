@@ -71,13 +71,16 @@ struct BDTextFieldWrapper: UIViewRepresentable {
             self.wrapper = wrapper
             
             // safeguard in case developer try to set delegate when using configure method
-            // since the wrapper rely on the internal delegate implementation
+            // since the wrapper relies on the internal delegate implementation
             textField.delegate = self
             
             textField.keyboardType = wrapper.keyboardType
             textField.returnKeyType = wrapper.returnKeyType
             
-            textField.text = wrapper.text
+            if textField.text != wrapper.text {
+                textField.text = wrapper.text
+            }
+            
             textField.textColor = wrapper.textColor ?? .label
             
             if isInitialLoad || isPlaceholderChanged || isPlaceholderColorChanged {

@@ -47,11 +47,11 @@ A tray-like view that is normally pinned to the bottom-trailing of a scene.
 
 ![BDButtonTrayPreview-1][button-tray-preview]
 
-<small>Regular Vertical Size Class</small>
+Regular Vertical Size Class
 
 ![BDButtonTrayPreview-2][button-tray-preview-horizontal]
 
-<small>Compact Vertical Size Class</small>
+Compact Vertical Size Class
 
 **Quick Start:**
 
@@ -89,19 +89,19 @@ For sample code, see [`ModalTextViewPreview`][ModalTextViewPreview.swift]
 
 <!-- BDUIKnit File Link -->
 
-[BDButtonTrayViewModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/Model/BDButtonTrayViewModel.swift
+[BDButtonTrayViewModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/BDButtonTrayViewModel.swift
 
-[ButtonTrayItem.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/Model/ButtonTrayItem.swift
+[ButtonTrayItem.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/ButtonTrayItem.swift
 
-[BDButtonTrayView.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/View/BDButtonTrayView.swift
+[BDButtonTrayView.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/BDButtonTrayView.swift
 
-[BDModalTextFieldModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextField/Model/BDModalTextFieldModel.swift
+[BDModalTextFieldModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextField/BDModalTextFieldModel.swift
 
-[BDModalTextField.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextField/View/BDModalTextField.swift
+[BDModalTextField.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextField/BDModalTextField.swift
 
-[BDModalTextViewModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextView/Model/BDModalTextViewModel.swift
+[BDModalTextViewModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextView/BDModalTextViewModel.swift
 
-[BDModalTextView.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextView/View/BDModalTextView.swift
+[BDModalTextView.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextView/BDModalTextView.swift
 
 <!-- Preview File Link -->
 

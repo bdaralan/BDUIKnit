@@ -1,9 +1,9 @@
 //
 //  BDTextViewWrapper.swift
-//  FNote
+//  
 //
 //  Created by Dara Beng on 9/15/19.
-//  Copyright © 2019 Dara Beng. All rights reserved.
+//  
 //
 
 import SwiftUI
@@ -55,7 +55,7 @@ struct BDTextViewWrapper: UIViewRepresentable {
             self.wrapper = wrapper
             
             // safeguard in case developer try to set delegate when using configure method
-            // since the wrapper rely on the internal delegate implementation
+            // since the wrapper relies on the internal delegate implementation
             textView.delegate = self
             
             if textView.text != wrapper.text {

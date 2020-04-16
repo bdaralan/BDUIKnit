@@ -10,8 +10,11 @@ import SwiftUI
 
 extension Color {
     
-    static private let validHex = Set("0123456789ABCDEFabcdef")
+    // Use set to get O(1) check.
+    static private let validHex = Set("0123456789AaBbCcDdEeFf")
     
+    // Use lower and uppercase to avoid String.uppercased() validation in Color(hex:).
+    // Exchange a tiny memory for constant O(1) get without validation.
     static private let hexValueMap: [Character: Int] = [
         "0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9,
         "A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15,
@@ -50,6 +53,7 @@ extension Color {
         let b2 = Color.hexValueMap[validHex.character(at: 5)]! // A = 10
         let blue = Double(b1 * 16 + b2) // 42
         
+        // divid by 255 because the API does not use 0-255, but 0-1
         self.init(red: red / 255, green: green / 255, blue: blue / 255)
     }
     
