@@ -1,3 +1,14 @@
+<p align="center">
+<img src="bduiknit-logo.png" width="400" max-width="90%" alt="BDUIKnit" />
+</p>
+
+<p align="center">
+    <img src="https://img.shields.io/badge/Swift-5.1-orange.svg" />
+    <a href="https://swift.org/package-manager">
+        <img src="https://img.shields.io/badge/swiftpm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
+    </a>
+</p>
+
 <!-- omit in toc -->
 # BDUIKnit
 
@@ -20,7 +31,7 @@ BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions
 
 ## Todo
 
-- [ ] Gotta have a logo. σ(^_^;)
+- [x] Gotta have a logo. σ(^_^;)
 - [x] Add `ButtonTrayView`
 - [x] Add `Color` extensions
 - [x] Add `ModalTextField`
@@ -47,11 +58,11 @@ A tray-like view that is normally pinned to the bottom-trailing of a scene.
 
 ![BDButtonTrayPreview-1][button-tray-preview]
 
-Regular Vertical Size Class
+<p align="center">Regular Vertical Size Class</p>
 
 ![BDButtonTrayPreview-2][button-tray-preview-horizontal]
 
-Compact Vertical Size Class
+<p align="center">Compact Vertical Size Class</p>
 
 **Quick Start:**
 
