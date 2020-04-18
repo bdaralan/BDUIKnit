@@ -31,14 +31,6 @@ public struct BDButtonTrayView: View {
         showMainItems ? viewModel.items : viewModel.subitems
     }
     
-    var itemActiveColor: Color {
-        showMainItems ? viewModel.itemActiveColor : viewModel.subitemActiveColor
-    }
-    
-    var itemInactiveColor: Color {
-        showMainItems ? viewModel.itemInactiveColor : viewModel.subitemInactiveColor
-    }
-    
     
     // MARK: Constructor
     
@@ -73,11 +65,7 @@ public struct BDButtonTrayView: View {
                     if !showMainItems {
                         backToMainItemsButton
                     }
-                    trayItemButtons(
-                        items: items,
-                        active: itemActiveColor,
-                        inactive: itemInactiveColor
-                    )
+                    trayItemButtons(items: items)
                 }
                 .padding(.bottom, trayDiameter + 8 + 16)
                 
@@ -110,11 +98,7 @@ public struct BDButtonTrayView: View {
                     if !showMainItems {
                         backToMainItemsButton
                     }
-                    trayItemButtons(
-                        items: items,
-                        active: itemActiveColor,
-                        inactive: itemInactiveColor
-                    )
+                    trayItemButtons(items: items)
                 }
                 .padding(.trailing, trayDiameter + 8 + 16)
                 
@@ -137,28 +121,42 @@ public struct BDButtonTrayView: View {
 extension BDButtonTrayView {
     
     var mainButton: some View {
+        let item = viewModel.mainItem
+        
+        let action = { self.viewModel.mainItem.action(item) }
+        
+        let disabled = viewModel.expanded || item.disabled
+        
+        let activeColor = item.activeColor ?? .accentColor
+        
+        let inactiveColor = item.inactiveColor ?? Color(.quaternaryLabel)
+        
         let diameter = trayDiameter + (viewModel.expanded ? 0 : 8)
         
         let background = Circle()
             .fill(viewModel.trayColor)
             .shadow(color: viewModel.trayShadowColor, radius: 6)
         
-        let imageColor = viewModel.expanded ? viewModel.buttonInactiveColor : viewModel.buttonActiveColor
-        
-        return Button(action: handleMainButtonTapped) {
-            Image(systemName: viewModel.buttonSystemImage)
+        return Button(action: action) {
+            Image(systemName: item.systemImage)
                 .resizable()
+                .scaledToFit()
                 .frame(width: 30, height: 30)
-                .foregroundColor(imageColor)
+                .foregroundColor(disabled ? inactiveColor : activeColor)
                 .frame(width: diameter, height: diameter)
         }
         .background(background)
         .animation(.spring())
-        .disabled(viewModel.expanded)
+        .disabled(disabled)
+        .onReceive(item.objectWillChange, perform: viewModel.objectWillChange.send)
     }
     
-    func handleMainButtonTapped() {
-        viewModel.action?()
+    func itemColor(for item: BDButtonTrayItem) -> Color {
+        if item.disabled {
+            return item.inactiveColor ?? viewModel.itemInactiveColor
+        } else {
+            return item.activeColor ?? viewModel.itemActiveColor
+        }
     }
 }
 
@@ -201,9 +199,14 @@ extension BDButtonTrayView {
         return BDButtonTrayItemView(item: item, size: itemSize, activeColor: color, inactiveColor: color)
     }
     
-    func trayItemButtons(items: [BDButtonTrayItem], active: Color, inactive: Color) -> some View {
+    func trayItemButtons(items: [BDButtonTrayItem]) -> some View {
         ForEach(items) { item in
-            BDButtonTrayItemView(item: item, size: self.itemSize, activeColor: active, inactiveColor: inactive)
+            BDButtonTrayItemView(
+                item: item,
+                size: self.itemSize,
+                activeColor: self.itemColor(for: item),
+                inactiveColor: self.itemColor(for: item)
+            )
         }
     }
     
@@ -217,7 +220,7 @@ extension BDButtonTrayView {
                         .lineLimit(1)
                         .fixedSize()
                         .padding(.horizontal, 16)
-                        .foregroundColor(item.disabled ? self.itemInactiveColor : self.itemActiveColor)
+                        .foregroundColor(self.itemColor(for: item))
                         .background(self.viewModel.trayColor)
                         .cornerRadius(self.itemSize.height / 2)
                         .shadow(color: self.viewModel.trayShadowColor.opacity(0.5), radius: 3, x: 0, y: 0)

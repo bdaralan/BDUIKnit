@@ -14,22 +14,22 @@ public final class BDButtonTrayViewModel: ObservableObject {
     
     // MARK: Property
     
-    /// A value indicates that the tray should expanded.
-    @Published public var expanded = false
+    /// The main button item.
+    @Published public var mainItem: BDButtonTrayItem
     
     /// The items for the tray to display.
     @Published public var items: [BDButtonTrayItem] = []
     
-    /// The items to push onto the tray with a back button.
+    /// The subitems to push onto the tray with a back button.
     ///
-    /// Assign value to push `subitems` to the tray or assign empty to pop.
+    /// Assign values to push `subitems` to the tray or assign empty to pop.
     @Published public var subitems: [BDButtonTrayItem] = []
+    
+    /// A value indicates that the tray should expanded.
+    @Published public var expanded = false
     
     
     // MARK: Action & Callback
-    
-    /// The action to perform when the main button is triggered.
-    public var action: (() -> Void)?
     
     /// An action to perform when the tray will expand or collapse.
     ///
@@ -41,25 +41,24 @@ public final class BDButtonTrayViewModel: ObservableObject {
     
     // MARK: UI
     
-    /// The main button's SFSymbol.
-    public var buttonSystemImage = "circle"
-    
-    /// The main button's active color.
-    public var buttonActiveColor = Color.accentColor
-    
-    /// The main button's inactive color.
-    public var buttonInactiveColor = Color(.quaternaryLabel)
-    
     /// The tray item's active color.
+    ///
+    /// - Note: The item's colors will be used instead if assigned.
     public var itemActiveColor = Color.accentColor
     
     /// The tray item's inactive color.
+    ///
+    /// - Note: The item's colors will be used instead if assigned.
     public var itemInactiveColor = Color(.quaternaryLabel)
     
     /// The tray subitem's active color.
+    ///
+    /// - Note: The item's colors will be used instead if assigned.
     public var subitemActiveColor = Color.accentColor
     
     /// The tray subitem's inactive color.
+    ///
+    /// - Note: The item's colors will be used instead if assigned.
     public var subitemInactiveColor = Color(.quaternaryLabel)
     
     /// The expand indicator's color.
@@ -75,7 +74,11 @@ public final class BDButtonTrayViewModel: ObservableObject {
     // MARK: Constructor
     
     /// Create with default values.
-    public init() {}
+    public init() {
+        mainItem = .init(title: "", systemImage: "circle", disabled: false, action: { _ in })
+        mainItem.activeColor = .accentColor
+        mainItem.inactiveColor = Color(.quaternaryLabel)
+    }
     
     
     // MARK: Method

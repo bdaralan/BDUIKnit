@@ -5,7 +5,7 @@
 //  Created by Dara Beng on 4/7/20.
 //
 
-import Foundation
+import SwiftUI
 
 
 /// An item to display in `BDButtonTrayView`.
@@ -25,6 +25,12 @@ public final class BDButtonTrayItem: ObservableObject, Identifiable {
     
     /// The value indicate whether the item should be disabled.
     @Published public var disabled: Bool
+    
+    /// The color for item when active.
+    @Published public var activeColor: Color?
+    
+    /// The color for item when inactive.
+    @Published public var inactiveColor: Color?
     
     /// The action to perform when the item is triggered.
     public let action: (BDButtonTrayItem) -> Void
