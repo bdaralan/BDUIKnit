@@ -80,6 +80,7 @@ public struct BDButtonTrayView: View {
         .overlay(mainButton, alignment: .bottom)
         .overlay(verticalTrayItemLabels, alignment: .bottomTrailing)
         .animation(.spring())
+        .gesture(trayExpandCollapseDragGesture())
     }
     
     
@@ -112,6 +113,7 @@ public struct BDButtonTrayView: View {
         .shadow(color: viewModel.trayShadowColor, radius: 6, x: 0, y: 3)
         .overlay(mainButton, alignment: .trailing)
         .animation(.spring())
+        .gesture(trayExpandCollapseDragGesture())
     }
 }
 
@@ -166,7 +168,13 @@ extension BDButtonTrayView {
 extension BDButtonTrayView {
     
     func expandIndicator(systemImage: String, size: CGSize, padding: EdgeInsets) -> some View {
-        Button(action: handleExpandIndicatorTapped) {
+        let action = {
+            let willExpand = !self.viewModel.expanded
+            self.viewModel.onTrayWillExpand?(willExpand)
+            self.viewModel.expanded = willExpand
+        }
+        
+        return Button(action: action) {
             Image(systemName: systemImage)
                 .font(.system(size: 32))
                 .frame(width: size.width, height: size.height)
@@ -178,10 +186,65 @@ extension BDButtonTrayView {
         }
     }
     
-    func handleExpandIndicatorTapped() {
-        let willExpand = !viewModel.expanded
-        viewModel.onTrayWillExpand?(willExpand)
-        viewModel.expanded = willExpand
+    func trayExpandCollapseDragGesture() -> some Gesture {
+        DragGesture().onEnded { drag in
+            let horizontal = self.verticalSizeClass == .compact
+            
+            // use the predicted translation to consider velocity
+            let translation = drag.predictedEndTranslation
+            
+            // this indicates if the swipe should be recognized
+            // example: if swipe up or down, the translation in y direction
+            // should be greater then the translation in x direction
+            // otherwise, the intention was not to swipe in y direction
+            let valid: Bool
+            if horizontal {
+                valid = abs(translation.width) > abs(translation.height)
+            } else {
+                valid = abs(translation.height) > abs(translation.width)
+            }
+            
+            guard valid else { return }
+            
+            // this indicates the drag amount with velocity
+            // use x value if horizontal, else use y
+            let value = horizontal ? translation.width : translation.height
+            
+            switch self.layoutDirection {
+            case .leftToRight:
+                // should expand
+                if value < -25, self.viewModel.expanded == false {
+                    self.viewModel.onTrayWillExpand?(true)
+                    self.viewModel.expanded = true
+                    return
+                }
+                
+                // should collapse
+                if value > 25, self.viewModel.expanded {
+                    self.viewModel.onTrayWillExpand?(false)
+                    self.viewModel.expanded = false
+                    return
+                }
+            
+            case .rightToLeft:
+                // should expand
+                if value > -25, self.viewModel.expanded == false {
+                    self.viewModel.onTrayWillExpand?(true)
+                    self.viewModel.expanded = true
+                    return
+                }
+                
+                // should collapse
+                if value < 25, self.viewModel.expanded {
+                    self.viewModel.onTrayWillExpand?(false)
+                    self.viewModel.expanded = false
+                    return
+                }
+            
+            @unknown default:
+                print("⚠️ have not supported layout direction: \(self.layoutDirection) ⚠️")
+            }
+        }
     }
 }
 
