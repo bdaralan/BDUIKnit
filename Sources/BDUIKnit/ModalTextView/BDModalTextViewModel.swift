@@ -24,6 +24,11 @@ public struct BDModalTextViewModel {
     /// A value indicates whether the text view is editable.
     public var isEditable = true
     
+    /// A value indicates maximum-allowed characters.
+    ///
+    /// - Note: The value is used to inform the limit and does not enforce any input restrictions.
+    public var characterLimit: Int?
+    
     /// An action to perform when *Done* button triggered.
     public var onCommit: (() -> Void)?
     
@@ -35,7 +40,14 @@ public struct BDModalTextViewModel {
     
     // MARK: UI
     
+    /// The color of the title.
     public var titleColor: Color?
+    
+    /// The color when below or equal to the limit.
+    public var characterLimitColor: Color?
+    
+    /// The color when above the limit.
+    public var characterLimitWarningColor: Color?
     
     
     // MARK: Constructor
