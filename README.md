@@ -124,10 +124,10 @@ For sample code, see [`ModalTextViewPreview`][ModalTextViewPreview.swift]
 
 <!-- Preview Image Link -->
 
-[button-tray-preview]: https://user-images.githubusercontent.com/21166606/79085623-2307dd00-7cee-11ea-8732-b3ef96836f78.png
+[button-tray-preview]: https://user-images.githubusercontent.com/21166606/80023203-090a8f00-8492-11ea-9f5d-e625d6bd6202.png
 
-[button-tray-preview-horizontal]: https://user-images.githubusercontent.com/21166606/79085566-ee942100-7ced-11ea-8d09-10eac91fac7d.png
+[button-tray-preview-horizontal]: https://user-images.githubusercontent.com/21166606/80023242-16277e00-8492-11ea-94bc-186b11a58544.png
 
 [modal-text-field-preview]: https://user-images.githubusercontent.com/21166606/79085645-37e47080-7cee-11ea-9d90-b73510e4506d.png
 
-[modal-text-view-preview]: https://user-images.githubusercontent.com/21166606/79294399-efae8500-7e8a-11ea-80f3-1c9dff0eedbf.png
+[modal-text-view-preview]: https://user-images.githubusercontent.com/21166606/80023271-217aa980-8492-11ea-8e52-23db8513654e.png
