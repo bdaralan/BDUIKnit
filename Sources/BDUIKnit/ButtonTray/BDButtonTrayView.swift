@@ -127,7 +127,7 @@ extension BDButtonTrayView {
         
         let action = { self.viewModel.mainItem.action(item) }
         
-        let disabled = viewModel.expanded || item.disabled
+        let disabled = item.disabled || (viewModel.expanded && viewModel.shouldDisableMainItemWhenExpanded)
         
         let activeColor = item.activeColor ?? .accentColor
         

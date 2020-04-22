@@ -28,6 +28,14 @@ public final class BDButtonTrayViewModel: ObservableObject {
     /// A value indicates that the tray should expanded.
     @Published public var expanded = false
     
+    /// A value indicate whether the `mainItem` should be disabled when the tray expanded.
+    ///
+    /// The default value is `true`.
+    ///
+    /// - Warning: The `mainItem.disabled` property is not affected or modified by this.
+    /// The `BDButtonTrayView` has its own logic to disable the `mainItem`.
+    @Published public var shouldDisableMainItemWhenExpanded = true
+    
     
     // MARK: Action & Callback
     
@@ -76,8 +84,6 @@ public final class BDButtonTrayViewModel: ObservableObject {
     /// Create with default values.
     public init() {
         mainItem = .init(title: "", systemImage: "circle", disabled: false, action: { _ in })
-        mainItem.activeColor = .accentColor
-        mainItem.inactiveColor = Color(.quaternaryLabel)
     }
     
     
@@ -85,7 +91,8 @@ public final class BDButtonTrayViewModel: ObservableObject {
     
     /// Tell the view to apply UI changes.
     ///
-    /// Use this method when want to make UI changes at runtime.
+    /// Use this method when want to make UI changes at runtime
+    /// when modifying properties that are not marked `@Published`.
     ///
     /// - Note: This is the same as calling `objectWillChange.send()`. 😬
     public func applyChanges() {
