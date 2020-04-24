@@ -8,19 +8,25 @@
 import SwiftUI
 
 
-struct BDModalDragHandle: View {
+public struct BDModalDragHandle: View {
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     
-    var color: Color?
+    var color: Color
     
-    var hideOnVerticalCompact = false
+    var hideOnVerticalCompact: Bool
     
     
-    var body: some View {
+    public init(color: Color = .primary, hideOnVerticalCompact: Bool = false) {
+        self.color = color
+        self.hideOnVerticalCompact = hideOnVerticalCompact
+    }
+    
+    
+    public var body: some View {
         RoundedRectangle(cornerRadius: 2, style: .continuous)
             .frame(width: 50, height: 4, alignment: .center)
-            .foregroundColor(color ?? .primary)
+            .foregroundColor(color)
             .opacity((hideOnVerticalCompact && verticalSizeClass == .compact) ? 0 : 1)
     }
 }

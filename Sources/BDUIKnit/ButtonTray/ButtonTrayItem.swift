@@ -15,6 +15,8 @@ public final class BDButtonTrayItem: ObservableObject, Identifiable {
     // MARK: Property
     
     /// A unique ID to identify the item.
+    ///
+    /// The default is a UUID string.
     public let id: String
     
     /// The item's title or name.
@@ -45,7 +47,13 @@ public final class BDButtonTrayItem: ObservableObject, Identifiable {
     ///   - systemImage: The item's SFSymbol.
     ///   - disabled: The value indicate whether the item should be disabled.
     ///   - action: The action to perform when the item is triggered.
-    public init(id: String = UUID().uuidString, title: String, systemImage: String, disabled: Bool = false, action: @escaping (BDButtonTrayItem) -> Void) {
+    public init(
+        id: String = UUID().uuidString,
+        title: String,
+        systemImage: String,
+        disabled: Bool = false,
+        action: @escaping (BDButtonTrayItem) -> Void
+    ) {
         self.id = id
         self.title = title
         self.systemImage = systemImage

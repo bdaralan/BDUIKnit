@@ -41,6 +41,19 @@ public struct BDTextFieldWrapper: UIViewRepresentable {
     var configure: ((UITextField) -> Void)?
     
     
+    /// FOR INTERNAL USE ONLY.
+    /// - Parameters:
+    ///   - isActive: The text field's first responder state.
+    ///   - text: The text field's text.
+    ///   - placeholder: The text field's placeholder.
+    ///   - textColor: The text field's text color.
+    ///   - placeholderColor: The text field's placeholder color.
+    ///   - keyboardType: The text field's keyboard type.
+    ///   - returnKeyType: The text field's return key type.
+    ///   - nextResponder: The next responder when the return key triggered.
+    ///   - onCommit: An action to perform when the return key triggered and `nextResponder` is `nil`.
+    ///   - onNextResponder: An action to perform when the `nextResponder` becomes active.
+    ///   - configure: A block to configure the text field when initialize.
     public init(
         isActive: Binding<Bool>,
         text: Binding<String>,
@@ -77,7 +90,7 @@ public struct BDTextFieldWrapper: UIViewRepresentable {
     }
     
     public func updateUIView(_ uiView: UITextField, context: Context) {
-        context.coordinator.update(with: self)
+        context.coordinator.update(with: self, context: context)
     }
     
     
@@ -98,7 +111,7 @@ public struct BDTextFieldWrapper: UIViewRepresentable {
         }
     
         
-        func update(with wrapper: BDTextFieldWrapper) {
+        func update(with wrapper: BDTextFieldWrapper, context: Context) {
             let isPlaceholderChanged = self.wrapper.placeholder != wrapper.placeholder
             let isPlaceholderColorChanged = self.wrapper.placeholderColor != wrapper.placeholderColor
             let isInitialLoad = textField.window == nil

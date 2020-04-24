@@ -169,7 +169,7 @@ extension BDButtonTrayView {
     
     func expandIndicator(systemImage: String, size: CGSize, padding: EdgeInsets) -> some View {
         let action = {
-            let willExpand = !self.viewModel.expanded
+            let willExpand = self.viewModel.expanded == false
             self.viewModel.onTrayWillExpand?(willExpand)
             self.viewModel.expanded = willExpand
         }

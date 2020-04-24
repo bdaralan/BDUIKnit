@@ -38,6 +38,8 @@ public final class BDButtonTrayViewModel: ObservableObject {
     
     /// A value indicates whether the tray can be expanded or collapsed by the user.
     ///
+    /// The default value is `false`.
+    ///
     /// - Note: Programmatically set `expanded` value will work normally.
     @Published public var locked = false
     
@@ -88,7 +90,7 @@ public final class BDButtonTrayViewModel: ObservableObject {
     
     /// Create with default values.
     public init() {
-        mainItem = .init(title: "", systemImage: "circle", disabled: false, action: { _ in })
+        mainItem = .init(title: "", systemImage: "circle", action: { _ in })
     }
     
     

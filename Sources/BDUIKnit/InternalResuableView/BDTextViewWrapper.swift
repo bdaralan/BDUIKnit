@@ -29,7 +29,7 @@ struct BDTextViewWrapper: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UITextView, context: Context) {
-        context.coordinator.update(with: self)
+        context.coordinator.update(with: self, context: context)
     }
     
     
@@ -51,7 +51,7 @@ struct BDTextViewWrapper: UIViewRepresentable {
         }
         
         
-        func update(with wrapper: BDTextViewWrapper) {
+        func update(with wrapper: BDTextViewWrapper, context: Context) {
             self.wrapper = wrapper
             
             // safeguard in case developer try to set delegate when using configure method
@@ -81,6 +81,7 @@ struct BDTextViewWrapper: UIViewRepresentable {
         }
         
         func textViewDidBeginEditing(_ textView: UITextView) {
+            guard textView.isFirstResponder == false else { return }
             wrapper.isFirstResponder = true
         }
         

@@ -74,7 +74,7 @@ public struct BDModalTextView: View {
 extension BDModalTextView {
     
     var dragHandle: some View {
-        BDModalDragHandle(color: viewModel.titleColor, hideOnVerticalCompact: true)
+        BDModalDragHandle(color: viewModel.titleColor ?? .primary, hideOnVerticalCompact: true)
     }
 }
 
