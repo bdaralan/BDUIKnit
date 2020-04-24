@@ -8,7 +8,15 @@
 import SwiftUI
 
 
-struct BDTextFieldWrapper: UIViewRepresentable {
+/// A text field wrapper. FOR INTERNAL USE ONLY.
+///
+/// A wrapper intended to be used with SwiftUI View.
+///
+/// - Warning: Known Issue: Xcode 11.4.1
+///   - Does not work well in `Form` or `ScrollView`.
+///   - Noticeably when `isActive` is set.
+///
+public struct BDTextFieldWrapper: UIViewRepresentable {
     
     @Binding var isActive: Bool
     
@@ -20,9 +28,9 @@ struct BDTextFieldWrapper: UIViewRepresentable {
     
     var placeholderColor: UIColor?
     
-    var keyboardType: UIKeyboardType = .default
+    var keyboardType: UIKeyboardType
     
-    var returnKeyType: UIReturnKeyType = .default
+    var returnKeyType: UIReturnKeyType
     
     var nextResponder: UIResponder?
     
@@ -33,22 +41,49 @@ struct BDTextFieldWrapper: UIViewRepresentable {
     var configure: ((UITextField) -> Void)?
     
     
-    func makeCoordinator() -> Coordinator {
+    public init(
+        isActive: Binding<Bool>,
+        text: Binding<String>,
+        placeholder: String = "",
+        textColor: UIColor? = nil,
+        placeholderColor: UIColor? = nil,
+        keyboardType: UIKeyboardType = .default,
+        returnKeyType: UIReturnKeyType = .default,
+        nextResponder: UIResponder? = nil,
+        onCommit: (() -> Void)? = nil,
+        onNextResponder: ((UIResponder) -> Void)? = nil,
+        configure: ((UITextField) -> Void)? = nil
+    ) {
+        _isActive = isActive
+        _text = text
+        self.placeholder = placeholder
+        self.textColor = textColor
+        self.placeholderColor = placeholderColor
+        self.keyboardType = keyboardType
+        self.returnKeyType = returnKeyType
+        self.nextResponder = nextResponder
+        self.onCommit = onCommit
+        self.onNextResponder = onNextResponder
+        self.configure = configure
+    }
+    
+    
+    public func makeCoordinator() -> Coordinator {
         Coordinator(wrapper: self)
     }
     
-    func makeUIView(context: Context) -> UITextField {
+    public func makeUIView(context: Context) -> UITextField {
         context.coordinator.textField
     }
     
-    func updateUIView(_ uiView: UITextField, context: Context) {
+    public func updateUIView(_ uiView: UITextField, context: Context) {
         context.coordinator.update(with: self)
     }
     
     
     // MARK: Coordinator
     
-    class Coordinator: NSObject, UITextFieldDelegate, BDInputViewResponder {
+    public final class Coordinator: NSObject, UITextFieldDelegate, BDInputViewResponder {
         
         var wrapper: BDTextFieldWrapper
         
@@ -93,7 +128,7 @@ struct BDTextFieldWrapper: UIViewRepresentable {
             handleFirstResponder(for: textField, isFirstResponder: wrapper.isActive)
         }
         
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             if let nextResponder = wrapper.nextResponder {
                 nextResponder.becomeFirstResponder()
                 return false
@@ -106,11 +141,13 @@ struct BDTextFieldWrapper: UIViewRepresentable {
             }
         }
         
-        func textFieldDidBeginEditing(_ textField: UITextField) {
+        public func textFieldDidBeginEditing(_ textField: UITextField) {
+            guard wrapper.isActive == false else { return }
             wrapper.isActive = true
         }
         
-        func textFieldDidEndEditing(_ textField: UITextField) {
+        public func textFieldDidEndEditing(_ textField: UITextField) {
+            guard wrapper.isActive else { return }
             wrapper.isActive = false
         }
         

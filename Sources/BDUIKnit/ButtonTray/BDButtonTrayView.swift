@@ -184,10 +184,13 @@ extension BDButtonTrayView {
                 .padding(padding)
                 .foregroundColor(viewModel.expandIndicatorColor)
         }
+        .disabled(viewModel.locked)
     }
     
     func trayExpandCollapseDragGesture() -> some Gesture {
         DragGesture().onEnded { drag in
+            guard self.viewModel.locked == false else { return }
+            
             let horizontal = self.verticalSizeClass == .compact
             
             // use the predicted translation to consider velocity
@@ -197,14 +200,14 @@ extension BDButtonTrayView {
             // example: if swipe up or down, the translation in y direction
             // should be greater then the translation in x direction
             // otherwise, the intention was not to swipe in y direction
-            let valid: Bool
+            let isValidDrag: Bool
             if horizontal {
-                valid = abs(translation.width) > abs(translation.height)
+                isValidDrag = abs(translation.width) > abs(translation.height)
             } else {
-                valid = abs(translation.height) > abs(translation.width)
+                isValidDrag = abs(translation.height) > abs(translation.width)
             }
             
-            guard valid else { return }
+            guard isValidDrag else { return }
             
             // this indicates the drag amount with velocity
             // use x value if horizontal, else use y
