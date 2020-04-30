@@ -54,11 +54,15 @@ public struct BDButtonTrayView: View {
     
     var verticalRegularBody: some View {
         VStack(spacing: 16) {
-            expandIndicator(
-                systemImage: "chevron.compact.up",
-                size: CGSize(width: trayDiameter, height: 25),
-                padding: EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0)
-            )
+            if viewModel.locked {
+                lockIndicator(padding: EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
+            } else {
+                expandIndicator(
+                    systemImage: "chevron.compact.up",
+                    size: CGSize(width: trayDiameter, height: 25),
+                    padding: EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0)
+                )
+            }
             
             if viewModel.expanded {
                 VStack(spacing: itemSpacing) {
@@ -77,8 +81,8 @@ public struct BDButtonTrayView: View {
         .background(viewModel.trayColor)
         .cornerRadius(trayDiameter / 2)
         .shadow(color: viewModel.trayShadowColor, radius: 6, x: 0, y: 3)
-        .overlay(mainButton, alignment: .bottom)
         .overlay(verticalTrayItemLabels, alignment: .bottomTrailing)
+        .overlay(mainButton, alignment: .bottom)
         .animation(.spring())
         .gesture(trayExpandCollapseDragGesture())
     }
@@ -88,11 +92,15 @@ public struct BDButtonTrayView: View {
     
     var verticalCompactBody: some View {
         HStack(spacing: 16) {
-            expandIndicator(
-                systemImage: layoutDirection == .leftToRight ? "chevron.compact.left" : "chevron.compact.right",
-                size: CGSize(width: 25, height: trayDiameter),
-                padding: EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
-            )
+            if viewModel.locked {
+                lockIndicator(padding: EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 0))
+            } else {
+                expandIndicator(
+                    systemImage: layoutDirection == .leftToRight ? "chevron.compact.left" : "chevron.compact.right",
+                    size: CGSize(width: 25, height: trayDiameter),
+                    padding: EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
+                )
+            }
             
             if viewModel.expanded {
                 HStack(spacing: itemSpacing) {
@@ -129,15 +137,21 @@ extension BDButtonTrayView {
         
         let disabled = item.disabled || (viewModel.expanded && viewModel.shouldDisableMainItemWhenExpanded)
         
-        let activeColor = item.activeColor ?? .accentColor
+        let activeColor = item.activeColor ?? viewModel.itemActiveColor
         
-        let inactiveColor = item.inactiveColor ?? Color(.quaternaryLabel)
+        let inactiveColor = item.inactiveColor ?? viewModel.itemInactiveColor
         
         let diameter = trayDiameter + (viewModel.expanded ? 0 : 8)
         
         let background = Circle()
             .fill(viewModel.trayColor)
             .shadow(color: viewModel.trayShadowColor, radius: 6)
+        
+        let label = trayItemLabel(item: item, textColor: disabled ? inactiveColor : activeColor)
+            .offset(x: -(diameter + 16))
+            .opacity(verticalSizeClass == .compact ? 0 : 1)
+            .transition(.move(edge: .trailing))
+            .animation(.interactiveSpring(response: 0.5))
         
         return Button(action: action) {
             Image(systemName: item.systemImage)
@@ -146,11 +160,13 @@ extension BDButtonTrayView {
                 .frame(width: 30, height: 30)
                 .foregroundColor(disabled ? inactiveColor : activeColor)
                 .frame(width: diameter, height: diameter)
+                
         }
         .background(background)
+        .overlay(label, alignment: .trailing)
         .animation(.spring())
-        .disabled(disabled)
-        .onReceive(item.objectWillChange, perform: viewModel.objectWillChange.send)
+        .allowsHitTesting(disabled == false)
+        .onReceive(item.objectWillChange, perform: { self.viewModel.objectWillChange.send() })
     }
     
     func itemColor(for item: BDButtonTrayItem) -> Color {
@@ -163,9 +179,16 @@ extension BDButtonTrayView {
 }
 
 
-// MARK: - Expand Indicator
+// MARK: - Expand & Lock Indicator
 
 extension BDButtonTrayView {
+    
+    func lockIndicator(padding: EdgeInsets) -> some View {
+        Circle()
+            .fill(viewModel.expandIndicatorColor)
+            .frame(width: 7, height: 7)
+            .padding(padding)
+    }
     
     func expandIndicator(systemImage: String, size: CGSize, padding: EdgeInsets) -> some View {
         let action = {
@@ -280,19 +303,8 @@ extension BDButtonTrayView {
         VStack(spacing: itemSpacing) {
             VStack(alignment: .trailing, spacing: itemSpacing) {
                 ForEach(items) { item in
-                    Text(item.title)
-                        .frame(height: self.itemSize.height)
-                        .font(.system(size: 17, weight: .regular))
-                        .lineLimit(1)
-                        .fixedSize()
-                        .padding(.horizontal, 16)
-                        .foregroundColor(self.itemColor(for: item))
-                        .background(self.viewModel.trayColor)
-                        .cornerRadius(self.itemSize.height / 2)
-                        .shadow(color: self.viewModel.trayShadowColor.opacity(0.5), radius: 3, x: 0, y: 0)
-                        .opacity(item.title.isEmpty ? 0 : 1)
-                        .animation(nil)
-                        .onReceive(item.objectWillChange, perform: { _ in self.viewModel.objectWillChange.send() })
+                    self.trayItemLabel(item: item)
+                        .onReceive(item.objectWillChange, perform: { self.viewModel.objectWillChange.send() })
                 }
             }
             .padding(.bottom, trayDiameter + 8 + 16) // mimic tray item buttons
@@ -301,5 +313,20 @@ extension BDButtonTrayView {
         .opacity(viewModel.expanded ? 1 : 0)
         .offset(x: -(trayDiameter + 16))
         .animation(.interactiveSpring(response: 0.5))
+    }
+    
+    func trayItemLabel(item: BDButtonTrayItem, textColor: Color? = nil) -> some View {
+        Text(item.title)
+            .frame(height: itemSize.height)
+            .font(.system(size: 17, weight: .regular))
+            .lineLimit(1)
+            .fixedSize()
+            .padding(.horizontal, 16)
+            .foregroundColor(textColor ?? itemColor(for: item))
+            .background(viewModel.trayColor)
+            .cornerRadius(itemSize.height / 2)
+            .shadow(color: viewModel.trayShadowColor.opacity(0.5), radius: 3, x: 0, y: 0)
+            .opacity(item.title.isEmpty ? 0 : 1)
+            .animation(nil)
     }
 }

@@ -42,8 +42,16 @@ public struct BDModalTextView: View {
                     .bold()
                     .foregroundColor(viewModel.titleColor)
                 Spacer()
-                Button(action: viewModel.onCommit ?? {}) {
-                    Text("Done").bold()
+                HStack(spacing: 16) {
+                    viewModel.onCancel.map { action in
+                        Button("Cancel", action: action)
+                    }
+                    
+                    viewModel.onCommit.map { action in
+                        Button(action: action) {
+                            Text("Done").bold()
+                        }
+                    }
                 }
             }
 

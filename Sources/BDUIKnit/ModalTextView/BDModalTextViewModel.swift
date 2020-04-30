@@ -29,7 +29,14 @@ public struct BDModalTextViewModel {
     /// - Note: The value is used to inform the limit and does not enforce any input restrictions.
     public var characterLimit: Int?
     
+    /// An action for *Cancel* button.
+    ///
+    /// The button is not visible if the value is not assigned.
+    public var onCancel: (() -> Void)?
+    
     /// An action to perform when *Done* button triggered.
+    ///
+    /// The button is not visible if the value is not assigned.
     public var onCommit: (() -> Void)?
     
     /// An action to perform when initializing the text view.

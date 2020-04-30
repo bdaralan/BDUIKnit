@@ -32,7 +32,7 @@ public final class BDButtonTrayViewModel: ObservableObject {
     ///
     /// The default value is `true`.
     ///
-    /// - Warning: The `mainItem.disabled` property is not affected or modified by this.
+    /// - Important: The `mainItem.disabled` property is not affected or modified by this.
     /// The `BDButtonTrayView` has its own logic to disable the `mainItem`.
     @Published public var shouldDisableMainItemWhenExpanded = true
     
@@ -50,7 +50,7 @@ public final class BDButtonTrayViewModel: ObservableObject {
     ///
     /// The boolean value is `true` for expand or `false` for collapse.
     ///
-    /// - Note: This is only triggered by user interaction.
+    /// - Note: This is only triggered by user interaction. Toggle `expanded` property does not trigger this.
     public var onTrayWillExpand: ((Bool) -> Void)?
     
     
@@ -59,38 +59,40 @@ public final class BDButtonTrayViewModel: ObservableObject {
     /// The tray item's active color.
     ///
     /// - Note: The item's colors will be used instead if assigned.
-    public var itemActiveColor = Color.accentColor
+    @Published public var itemActiveColor = Color.accentColor
     
     /// The tray item's inactive color.
     ///
     /// - Note: The item's colors will be used instead if assigned.
-    public var itemInactiveColor = Color(.quaternaryLabel)
+    @Published public var itemInactiveColor = Color(.quaternaryLabel)
     
     /// The tray subitem's active color.
     ///
     /// - Note: The item's colors will be used instead if assigned.
-    public var subitemActiveColor = Color.accentColor
+    @Published public var subitemActiveColor = Color.accentColor
     
     /// The tray subitem's inactive color.
     ///
     /// - Note: The item's colors will be used instead if assigned.
-    public var subitemInactiveColor = Color(.quaternaryLabel)
+    @Published public var subitemInactiveColor = Color(.quaternaryLabel)
     
     /// The expand indicator's color.
-    public var expandIndicatorColor = Color.secondary
+    @Published public var expandIndicatorColor = Color.secondary
     
     /// The color of the tray.
-    public var trayColor = Color(.systemBackground)
+    @Published public var trayColor = Color(.systemBackground)
     
     /// The shadow color of the tray.
-    public var trayShadowColor = Color.black.opacity(0.2)
+    @Published public var trayShadowColor = Color.black.opacity(0.2)
     
     
     // MARK: Constructor
     
     /// Create with default values.
     public init() {
-        mainItem = .init(title: "", systemImage: "circle", action: { _ in })
+        mainItem = .init(title: "", systemImage: "circle") { item in
+            print("⚠️ The default main item does nothing, assign a new item ⚠️")
+        }
     }
     
     
@@ -102,6 +104,7 @@ public final class BDButtonTrayViewModel: ObservableObject {
     /// when modifying properties that are not marked with `@Published`.
     ///
     /// - Note: This is the same as calling `objectWillChange.send()`. 😬
+    @available(*, deprecated, message: "Since all properties are now marked with @Published, calling this is not required.")
     public func applyChanges() {
         objectWillChange.send()
     }
