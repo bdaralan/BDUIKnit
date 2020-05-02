@@ -165,9 +165,6 @@ public struct BDTextFieldWrapper: UIViewRepresentable {
         }
         
         func setupTextField() {
-            textField.font = .preferredFont(forTextStyle: .largeTitle)
-            textField.returnKeyType = .done
-            textField.clearButtonMode = .whileEditing
             textField.delegate = self
             textField.addTarget(self, action: #selector(handleEditingChanged), for: .editingChanged)
             textField.adjustsFontForContentSizeCategory = true

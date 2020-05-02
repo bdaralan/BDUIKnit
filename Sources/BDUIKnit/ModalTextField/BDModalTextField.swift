@@ -56,7 +56,7 @@ public struct BDModalTextField: View {
                     keyboardType: viewModel.keyboardType,
                     returnKeyType: viewModel.returnKeyType,
                     onCommit: viewModel.onReturnKey,
-                    configure: viewModel.configure
+                    configure: configureTextField
                 )
                     .fixedSize(horizontal: false, vertical: true)
                 
@@ -103,5 +103,11 @@ extension BDModalTextField {
     
     var dragHandle: some View {
         BDModalDragHandle(color: viewModel.titleColor ?? .primary, hideOnVerticalCompact: true)
+    }
+    
+    func configureTextField(_ textField: UITextField) {
+        textField.font = .preferredFont(forTextStyle: .largeTitle)
+        textField.clearButtonMode = .whileEditing
+        viewModel.configure?(textField)
     }
 }

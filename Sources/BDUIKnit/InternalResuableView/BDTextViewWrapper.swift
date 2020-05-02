@@ -81,12 +81,12 @@ struct BDTextViewWrapper: UIViewRepresentable {
         }
         
         func textViewDidBeginEditing(_ textView: UITextView) {
-            guard textView.isFirstResponder == false else { return }
+            guard wrapper.isFirstResponder == false else { return }
             wrapper.isFirstResponder = true
         }
         
         func textViewDidEndEditing(_ textView: UITextView) {
-            wrapper.text = textView.text
+            guard wrapper.isFirstResponder else { return }
             wrapper.isFirstResponder = false
         }
         
