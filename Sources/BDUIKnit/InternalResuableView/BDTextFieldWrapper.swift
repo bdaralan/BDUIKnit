@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-/// A text field wrapper. FOR INTERNAL USE ONLY.
+/// A text field wrapper. FOR INTERNAL USE ONLY, but feel free to explore. :]
 ///
 /// A wrapper intended to be used with SwiftUI View.
 ///

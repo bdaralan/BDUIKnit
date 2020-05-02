@@ -9,33 +9,65 @@
 import SwiftUI
 
 
-struct BDTextViewWrapper: UIViewRepresentable {
+/// A text view wrapper. FOR INTERNAL USE ONLY, but feel free to explore. :]
+///
+/// A wrapper intended to be used with SwiftUI View.
+///
+/// - Warning: Known Issue: Xcode 11.4.1
+///   - Does not work well in `Form` or `ScrollView`.
+///   - Noticeably when `isActive` is set.
+///
+public struct BDTextViewWrapper: UIViewRepresentable {
         
     @Binding var text: String
     
     @Binding var isFirstResponder: Bool
     
-    var isEditable = true
+    var isEditable: Bool
+    
+    var adjustOffsetAutomatically: Bool
         
     var configure: ((UITextView) -> Void)?
     
     
-    func makeCoordinator() -> Coordinator {
+    /// FOR INTERNAL USE ONLY.
+    /// - Parameters:
+    ///   - isFirstResponder: The text view's first responder state.
+    ///   - text: The text view's text.
+    ///   - isEditable: Indicate whether the text view is editable.
+    ///   - adjustOffsetAutomatically: Tell text view to adjust bottom offset when keyboard appears.
+    ///   - configure: A block to configure the text field when initialize.
+    public init(
+        text: Binding<String>,
+        isFirstResponder: Binding<Bool>,
+        isEditable: Bool = true,
+        adjustOffsetAutomatically: Bool = true,
+        configure: ((UITextView) -> Void)? = nil
+    ) {
+        _text = text
+        _isFirstResponder = isFirstResponder
+        self.isEditable = isEditable
+        self.adjustOffsetAutomatically = adjustOffsetAutomatically
+        self.configure = configure
+    }
+    
+    
+    public func makeCoordinator() -> Coordinator {
         Coordinator(wrapper: self)
     }
     
-    func makeUIView(context: Context) -> UITextView {
+    public func makeUIView(context: Context) -> UITextView {
         context.coordinator.textView
     }
     
-    func updateUIView(_ uiView: UITextView, context: Context) {
+    public func updateUIView(_ uiView: UITextView, context: Context) {
         context.coordinator.update(with: self, context: context)
     }
     
     
     // MARK - Coordinator
     
-    class Coordinator: NSObject, UITextViewDelegate, BDInputViewResponder {
+    public class Coordinator: NSObject, UITextViewDelegate, BDInputViewResponder {
 
         var wrapper: BDTextViewWrapper
         
@@ -47,11 +79,15 @@ struct BDTextViewWrapper: UIViewRepresentable {
             super.init()
             setupTextView()
             wrapper.configure?(textView)
-            listenToKeyboardNotification()
+            listenToKeyboardNotification(wrapper.adjustOffsetAutomatically)
         }
         
         
         func update(with wrapper: BDTextViewWrapper, context: Context) {
+            if self.wrapper.adjustOffsetAutomatically != wrapper.adjustOffsetAutomatically {
+                listenToKeyboardNotification(wrapper.adjustOffsetAutomatically)
+            }
+            
             self.wrapper = wrapper
             
             // safeguard in case developer try to set delegate when using configure method
@@ -76,26 +112,30 @@ struct BDTextViewWrapper: UIViewRepresentable {
             textView.backgroundColor = .clear
         }
         
-        func textViewDidChange(_ textView: UITextView) {
+        public func textViewDidChange(_ textView: UITextView) {
             wrapper.text = textView.text
         }
         
-        func textViewDidBeginEditing(_ textView: UITextView) {
+        public func textViewDidBeginEditing(_ textView: UITextView) {
             guard wrapper.isFirstResponder == false else { return }
             wrapper.isFirstResponder = true
         }
         
-        func textViewDidEndEditing(_ textView: UITextView) {
+        public func textViewDidEndEditing(_ textView: UITextView) {
             guard wrapper.isFirstResponder else { return }
             wrapper.isFirstResponder = false
         }
         
-        func listenToKeyboardNotification() {
+        func listenToKeyboardNotification(_ listen: Bool) {
             let center = NotificationCenter.default
             let keyboardFrameDidChange = UIResponder.keyboardDidChangeFrameNotification
             let keyboardDidHide = UIResponder.keyboardDidHideNotification
-            center.addObserver(self, selector: #selector(handleKeyboardFrameChanged), name: keyboardFrameDidChange, object: nil)
-            center.addObserver(self, selector: #selector(handleKeyboardDismissed), name: keyboardDidHide, object: nil)
+            if listen {
+                center.addObserver(self, selector: #selector(handleKeyboardFrameChanged), name: keyboardFrameDidChange, object: nil)
+                center.addObserver(self, selector: #selector(handleKeyboardDismissed), name: keyboardDidHide, object: nil)
+            } else {
+                center.removeObserver(self)
+            }
         }
         
         @objc private func handleKeyboardFrameChanged(_ notification: Notification) {
