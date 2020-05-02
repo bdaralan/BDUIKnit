@@ -137,17 +137,15 @@ extension BDButtonTrayView {
         
         let disabled = item.disabled || (viewModel.expanded && viewModel.shouldDisableMainItemWhenExpanded)
         
-        let activeColor = item.activeColor ?? viewModel.itemActiveColor
-        
-        let inactiveColor = item.inactiveColor ?? viewModel.itemInactiveColor
-        
         let diameter = trayDiameter + (viewModel.expanded ? 0 : 8)
+        
+        let color = getColor(for: item, disabled: disabled)
         
         let background = Circle()
             .fill(viewModel.trayColor)
             .shadow(color: viewModel.trayShadowColor, radius: 6)
         
-        let label = trayItemLabel(item: item, textColor: disabled ? inactiveColor : activeColor)
+        let label = trayItemLabel(title: item.title, textColor: color)
             .offset(x: -(diameter + 16))
             .opacity(verticalSizeClass == .compact ? 0 : 1)
             .transition(.move(edge: .trailing))
@@ -158,7 +156,7 @@ extension BDButtonTrayView {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 30, height: 30)
-                .foregroundColor(disabled ? inactiveColor : activeColor)
+                .foregroundColor(color)
                 .frame(width: diameter, height: diameter)
                 
         }
@@ -169,8 +167,8 @@ extension BDButtonTrayView {
         .onReceive(item.objectWillChange, perform: { self.viewModel.objectWillChange.send() })
     }
     
-    func itemColor(for item: BDButtonTrayItem) -> Color {
-        if item.disabled {
+    func getColor(for item: BDButtonTrayItem, disabled: Bool) -> Color {
+        if disabled {
             return item.inactiveColor ?? viewModel.itemInactiveColor
         } else {
             return item.activeColor ?? viewModel.itemActiveColor
@@ -293,8 +291,8 @@ extension BDButtonTrayView {
             BDButtonTrayItemView(
                 item: item,
                 size: self.itemSize,
-                activeColor: self.itemColor(for: item),
-                inactiveColor: self.itemColor(for: item)
+                activeColor: self.getColor(for: item, disabled: item.disabled),
+                inactiveColor: self.getColor(for: item, disabled: item.disabled)
             )
         }
     }
@@ -303,7 +301,7 @@ extension BDButtonTrayView {
         VStack(spacing: itemSpacing) {
             VStack(alignment: .trailing, spacing: itemSpacing) {
                 ForEach(items) { item in
-                    self.trayItemLabel(item: item)
+                    self.trayItemLabel(title: item.title, textColor: self.getColor(for: item, disabled: item.disabled))
                         .onReceive(item.objectWillChange, perform: { self.viewModel.objectWillChange.send() })
                 }
             }
@@ -315,18 +313,18 @@ extension BDButtonTrayView {
         .animation(.interactiveSpring(response: 0.5))
     }
     
-    func trayItemLabel(item: BDButtonTrayItem, textColor: Color? = nil) -> some View {
-        Text(item.title)
+    func trayItemLabel(title: String, textColor: Color) -> some View {
+        Text(title)
             .frame(height: itemSize.height)
             .font(.system(size: 17, weight: .regular))
             .lineLimit(1)
             .fixedSize()
             .padding(.horizontal, 16)
-            .foregroundColor(textColor ?? itemColor(for: item))
+            .foregroundColor(textColor)
             .background(viewModel.trayColor)
             .cornerRadius(itemSize.height / 2)
             .shadow(color: viewModel.trayShadowColor.opacity(0.5), radius: 3, x: 0, y: 0)
-            .opacity(item.title.isEmpty ? 0 : 1)
+            .opacity(title.isEmpty ? 0 : 1)
             .animation(nil)
     }
 }
