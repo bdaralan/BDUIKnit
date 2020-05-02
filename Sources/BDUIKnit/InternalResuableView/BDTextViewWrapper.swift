@@ -67,7 +67,7 @@ public struct BDTextViewWrapper: UIViewRepresentable {
     
     // MARK - Coordinator
     
-    public class Coordinator: NSObject, UITextViewDelegate, BDInputViewResponder {
+    public final class Coordinator: NSObject, UITextViewDelegate, BDInputViewResponder {
 
         var wrapper: BDTextViewWrapper
         
