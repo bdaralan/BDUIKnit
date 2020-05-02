@@ -28,6 +28,11 @@ public final class BDButtonTrayItem: ObservableObject, Identifiable {
     /// The value indicate whether the item should be disabled.
     @Published public var disabled: Bool
     
+    /// A value indicates whether the item should be animated.
+    ///
+    /// Use this to draw user's attention or to signify an important action.
+    @Published public var animated = false
+    
     /// The color for item when active.
     @Published public var activeColor: Color?
     
