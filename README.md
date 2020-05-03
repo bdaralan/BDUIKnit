@@ -1,8 +1,6 @@
 <p align="center">
 <picture>
-  <source 
-    srcset="https://user-images.githubusercontent.com/21166606/80897389-d5f3a700-8cac-11ea-9fe1-e0c15c89d0ce.png" 
-    media="(prefers-color-scheme: dark)">
+  <source srcset="bduiknit-logo-white.png" media="(prefers-color-scheme: dark)">
   <img src="bduiknit-logo.png" width="400" max-width="90%" alt="BDUIKnit" />
 </picture>
 </p>
