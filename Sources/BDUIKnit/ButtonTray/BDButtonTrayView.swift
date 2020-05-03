@@ -133,8 +133,6 @@ extension BDButtonTrayView {
     var mainButton: some View {
         let item = viewModel.mainItem
         
-        let action = { self.viewModel.mainItem.action(item) }
-        
         let disabled = item.disabled || (viewModel.expanded && viewModel.shouldDisableMainItemWhenExpanded)
         
         let diameter = trayDiameter + (viewModel.expanded ? 0 : 8)
@@ -151,15 +149,13 @@ extension BDButtonTrayView {
             .transition(.move(edge: .trailing))
             .animation(.interactiveSpring(response: 0.5))
         
-        return Button(action: action) {
-            Image(systemName: item.systemImage)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 30, height: 30)
-                .foregroundColor(color)
-                .frame(width: diameter, height: diameter)
-                
-        }
+        return BDButtonTrayItemView(
+            item: item,
+            size: itemSize,
+            activeColor: getColor(for: item, disabled: disabled),
+            inactiveColor: getColor(for: item, disabled: disabled)
+        )
+        .frame(width: diameter, height: diameter)
         .background(background)
         .overlay(label, alignment: .trailing)
         .animation(.spring())
