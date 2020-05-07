@@ -52,7 +52,7 @@ To add BDUIKnit to your project:
 
 BDUIKnit follows **MVVM** design pattern; therefore, most **Views** will have their corresponding **View Models**. View models are either `class` or `struct`, so use the appropriate `@ObservedObject`, `@State`, or `@Binding` as needed.
 
-New to **MVVM**? Fear not. Try to read the below codes, if you can guess what it is doing, you are ready to use **UIKnit**.
+New to **MVVM**? Fear not. Try to read the below codes, if you can guess what they are doing, you are ready to use BDUIKnit.
 
 ``` Swift
 // create a view model that controls the tray view
