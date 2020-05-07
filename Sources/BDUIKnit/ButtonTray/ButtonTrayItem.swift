@@ -31,7 +31,13 @@ public final class BDButtonTrayItem: ObservableObject, Identifiable {
     /// A value indicates whether the item should be animated.
     ///
     /// Use this to draw user's attention or to signify an important action.
+    @available(*, deprecated, message: "animated property is deprecated use animation property")
     @Published public var animated = false
+    
+    /// A value indicate whether the item should be animated.
+    ///
+    /// See `BDButtonTrayItemAnimation` for each animation's details.
+    @Published public var animation: BDButtonTrayItemAnimation?
     
     /// The color for item when active.
     @Published public var activeColor: Color?
@@ -66,4 +72,3 @@ public final class BDButtonTrayItem: ObservableObject, Identifiable {
         self.action = action
     }
 }
-

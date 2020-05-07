@@ -14,8 +14,6 @@ struct BDButtonTrayItemView: View {
     
     @ObservedObject var item: BDButtonTrayItem
     
-    @State private var animated = false
-    
     var size: CGSize
     
     var activeColor: Color
@@ -26,17 +24,12 @@ struct BDButtonTrayItemView: View {
     var body: some View {
         Button(action: { self.item.action(self.item) }) {
             VStack {
-                if item.animated {
-                    image
-                        .scaleEffect(x: animated ? 0.85 : 1.07, y: animated ? 0.85 : 1.07, anchor: .center)
-                        .animation(Animation.easeInOut(duration: 0.4).repeatForever(autoreverses: true))
-                        .onAppear(perform: { self.animated = true })
-                        .onDisappear(perform: { self.animated = false })
+                if item.animation != nil {
+                    item.animation!.makeAnimationView(itemImage: AnyView(image))
                 } else {
                     image
                 }
             }
-            .transition(.opacity)
             .animation(.easeIn(duration: 0.45))
         }
         .disabled(item.disabled)
