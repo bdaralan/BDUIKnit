@@ -52,9 +52,32 @@ To add BDUIKnit to your project:
 
 BDUIKnit follows **MVVM** design pattern; therefore, most **Views** will have their corresponding **View Models**. View models are either `class` or `struct`, so use the appropriate `@ObservedObject`, `@State`, or `@Binding` as needed.
 
+New to **MVVM**? Fear not. Try to read the below codes, if you can guess what it is doing, you are ready to use **UIKnit**.
+
+``` Swift
+// create a view model that controls the tray view
+let trayViewModel = BDButtonTrayViewModel()
+trayViewModel.mainItem = createTrayMainItem()
+trayViewModel.items = createTrayItems()
+
+trayViewModel.expanded = true
+trayViewModel.shouldDisableMainItemWhenExpanded = true
+
+trayViewModel.trayColor = Color(.systemBackground)
+trayViewModel.itemActiveColor = Color.accentColor
+
+// pass the view model to the view
+BDButtonTrayView(viewModel: trayViewModel)
+
+// application is running, update the view model
+trayViewModel.expanded = false // the tray view is now collapsed
+```
+
 ### BDButtonTrayView
 
 A tray-like view that is normally pinned to the bottom-trailing of a scene.
+
+Tray item now supports more animations.
 
 ![BDButtonTrayPreview-1][button-tray-preview]
 
