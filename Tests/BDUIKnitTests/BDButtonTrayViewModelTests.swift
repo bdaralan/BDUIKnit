@@ -14,13 +14,15 @@ final class BDButtonTrayViewModelTests: XCTestCase {
     func testConstructor() {
         let model = BDButtonTrayViewModel()
         
-        XCTAssertEqual(model.expanded, false)
+        XCTAssertFalse(model.expanded)
+        
+        XCTAssertTrue(model.shouldDisableMainItemWhenExpanded)
+        
+        XCTAssertFalse(model.locked)
         
         XCTAssertTrue(model.items.isEmpty)
         
         XCTAssertTrue(model.subitems.isEmpty)
-        
-        XCTAssertNil(model.action)
         
         XCTAssertNil(model.onTrayWillExpand)
     }
