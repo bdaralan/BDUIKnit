@@ -145,7 +145,11 @@ For sample code, see [`PersistPropertyWrapperPreview`][PersistPropertyWrapperPre
 ``` Swift
 // Create Color from hex
 
-Color(hex: "BDA12A") // #BDA12A, bda12a, #bda12a
+Color(hex: "BDA12A") // a Color
+
+UIColor(hex: "#bda12a") // a UIColor
+
+UIColor(hex: "purple") // fatal error: create color with invalid hex: 'purple'
 ```
 
 <!-- BDUIKnit File Link -->
