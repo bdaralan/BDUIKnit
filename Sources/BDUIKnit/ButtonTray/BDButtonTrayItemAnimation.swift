@@ -34,7 +34,7 @@ public enum BDButtonTrayItemAnimation {
     /// - Parameter itemImage: The tray item's image view.
     ///
     /// - Returns: An animating view.
-    public func makeAnimationView(itemImage: AnyView) -> some View {
+    func makeAnimationView(itemImage: AnyView) -> some View {
         switch self {
         
         case let .pulse(duration):

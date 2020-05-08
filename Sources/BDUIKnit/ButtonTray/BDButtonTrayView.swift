@@ -160,7 +160,7 @@ extension BDButtonTrayView {
         .overlay(label, alignment: .trailing)
         .animation(.spring())
         .allowsHitTesting(disabled == false)
-        .onReceive(item.objectWillChange, perform: { self.viewModel.objectWillChange.send() })
+        .onReceive(item.objectWillChange, perform: viewModel.objectWillChange.send)
     }
     
     func getColor(for item: BDButtonTrayItem, disabled: Bool) -> Color {
@@ -290,6 +290,7 @@ extension BDButtonTrayView {
                 activeColor: self.getColor(for: item, disabled: item.disabled),
                 inactiveColor: self.getColor(for: item, disabled: item.disabled)
             )
+                .onReceive(item.objectWillChange, perform: self.viewModel.objectWillChange.send)
         }
     }
     
@@ -298,7 +299,6 @@ extension BDButtonTrayView {
             VStack(alignment: .trailing, spacing: itemSpacing) {
                 ForEach(items) { item in
                     self.trayItemLabel(title: item.title, textColor: self.getColor(for: item, disabled: item.disabled))
-                        .onReceive(item.objectWillChange, perform: { self.viewModel.objectWillChange.send() })
                 }
             }
             .padding(.bottom, trayDiameter + 8 + 16) // mimic tray item buttons

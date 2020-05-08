@@ -22,7 +22,7 @@ struct BDButtonTrayItemView: View {
     
     
     var body: some View {
-        Button(action: { self.item.action(self.item) }) {
+        Button(action: action) {
             VStack {
                 if item.animation != nil {
                     item.animation!.makeAnimationView(itemImage: AnyView(image))
@@ -30,7 +30,8 @@ struct BDButtonTrayItemView: View {
                     image
                 }
             }
-            .animation(.easeIn(duration: 0.45))
+            .transition(AnyTransition.opacity)
+            .animation(nil) /** use these two to make sure animation starts without a split-second fading **/
         }
         .disabled(item.disabled)
     }
@@ -42,5 +43,9 @@ struct BDButtonTrayItemView: View {
             .scaledToFit()
             .frame(width: size.width, height: size.height)
             .foregroundColor(item.disabled ? inactiveColor : activeColor)
+    }
+    
+    func action() {
+        item.action(item)
     }
 }
