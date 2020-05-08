@@ -115,7 +115,7 @@ For sample code, see [`ModalTextViewPreview`][ModalTextViewPreview.swift]
 
 ### BDPersist Property Wrapper
 
-A property wrapper that stores value to a given store. For example, `UserDefaults`.
+A property wrapper that stores value in a given store. For example, `UserDefaults`.
 
 **Quick Start:**
 
