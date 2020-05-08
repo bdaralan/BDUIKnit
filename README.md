@@ -15,28 +15,20 @@
 BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions packed in a Swift Package Manager.
 
 - [Goals](#goals)
-- [Todo](#todo)
 - [Get Started](#get-started)
   - [Installation](#installation)
   - [Quick Introduction](#quick-introduction)
   - [BDButtonTrayView](#bdbuttontrayview)
   - [BDModalTextField](#bdmodaltextfield)
   - [BDModalTextView](#bdmodaltextview)
+  - [BDPersist Property Wrapper](#bdpersist-property-wrapper)
+  - [Extension](#extension)
 
 ## Goals
 
 - To collect my personal custom reusable UI and extensions and put them in one place.
 - To create custom reusable UI and share them.
 - To learn and share what I learnt building these UI & extensions.
-
-## Todo
-
-- [x] Gotta have a logo. σ(^_^;)
-- [x] Add `ButtonTrayView`
-- [x] Add `Color` extensions
-- [x] Add `ModalTextField`
-- [x] Add `ModalTextView`
-- [ ] Add more...
 
 ## Get Started
 
@@ -121,6 +113,41 @@ A text view intended to be used as a modal presentation sheet when need to get i
 
 For sample code, see [`ModalTextViewPreview`][ModalTextViewPreview.swift]
 
+### BDPersist Property Wrapper
+
+A property wrapper that stores value to a given store. For example, `UserDefaults`.
+
+**Quick Start:**
+
+- [`BDPersist`][BDPersist.swift]
+- [`BDSystemPersistentStore`][BDPersistentStore.swift]
+
+``` Swift
+// Store username in UserDefaults
+@BDPersist(in: .userDefaults, key: "username", default: "")
+var username: String
+
+// Add post notification when username changed
+static let nUsernameDidChange = Notification.Name("nUsernameDidChange")
+
+@BDPersist(in: .userDefaults, key: "username", default: "", post: nUsernameDidChange)
+var username: String
+
+// Support Optional Value
+@BDPersist(in: .ubiquitousStore, key: "highScore", default: nil)
+var highScore: Int?
+```
+
+For sample code, see [`PersistPropertyWrapperPreview`][PersistPropertyWrapperPreview.swift]
+
+### Extension
+
+``` Swift
+// Create Color from hex
+
+Color(hex: "BDA12A") // #BDA12A, bda12a, #bda12a
+```
+
 <!-- BDUIKnit File Link -->
 
 [BDButtonTrayViewModel.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ButtonTray/BDButtonTrayViewModel.swift
@@ -137,6 +164,10 @@ For sample code, see [`ModalTextViewPreview`][ModalTextViewPreview.swift]
 
 [BDModalTextView.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextView/BDModalTextView.swift
 
+[BDPersist.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/Persist/BDPersist.swift
+
+[BDPersistentStore.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/Persist/BDPersistentStore.swift
+
 <!-- Preview File Link -->
 
 [ButtonTrayViewPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/ButtonTrayViewPreview.swift
@@ -144,6 +175,8 @@ For sample code, see [`ModalTextViewPreview`][ModalTextViewPreview.swift]
 [ModalTextFieldPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/ModalTextFieldPreview.swift
 
 [ModalTextViewPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/ModalTextViewPreview.swift
+
+[PersistPropertyWrapperPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/PersistPropertyWrapperPreview.swift
 
 <!-- Preview Image Link -->
 
