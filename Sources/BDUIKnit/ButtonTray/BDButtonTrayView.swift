@@ -310,7 +310,7 @@ extension BDButtonTrayView {
     }
     
     func trayItemLabel(title: String, textColor: Color) -> some View {
-        Text(title)
+        Text(LocalizedStringKey(title))
             .frame(height: itemSize.height)
             .font(.system(size: 17, weight: .regular))
             .lineLimit(1)
