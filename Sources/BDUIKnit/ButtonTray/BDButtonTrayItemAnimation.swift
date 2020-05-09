@@ -23,7 +23,7 @@ public enum BDButtonTrayItemAnimation {
     /// The duration is a duration of one cycle.
     case rotation(duration: Double = 1.4)
     
-    /// Title animation.
+    /// Tilt animation.
     ///
     /// The duration is a duration of tiling back and forth.
     case tilt(duration: Double = 0.4, degree: Double = 14, anchor: UnitPoint = .center)
@@ -38,13 +38,13 @@ public enum BDButtonTrayItemAnimation {
         switch self {
         
         case let .pulse(duration):
-            return AnyView(itemImage.modifier(PulseAnimationModifier(duration: duration)))
+            return AnyView(itemImage.modifier(PulseModifier(duration: duration)))
         
         case let .rotation(duration):
-            return AnyView(itemImage.modifier(RotationAnimationModifier(duration: duration)))
+            return AnyView(itemImage.modifier(RotationModifier(duration: duration)))
         
         case let .tilt(duration, degree, anchor):
-            return AnyView(itemImage.modifier(TiltAnimationModifier(degree: degree, anchor: anchor, duration: duration)))
+            return AnyView(itemImage.modifier(TiltModifier(duration: duration, degree: degree, anchor: anchor)))
         }
     }
 }
@@ -54,7 +54,7 @@ public enum BDButtonTrayItemAnimation {
 
 fileprivate extension BDButtonTrayItemAnimation {
     
-    struct PulseAnimationModifier: ViewModifier {
+    struct PulseModifier: ViewModifier {
         
         @State private var animated = false
         
@@ -68,7 +68,7 @@ fileprivate extension BDButtonTrayItemAnimation {
         }
     }
 
-    struct RotationAnimationModifier: ViewModifier {
+    struct RotationModifier: ViewModifier {
         
         @State private var animated = false
         
@@ -82,15 +82,15 @@ fileprivate extension BDButtonTrayItemAnimation {
         }
     }
     
-    struct TiltAnimationModifier: ViewModifier {
+    struct TiltModifier: ViewModifier {
         
         @State private var animated = false
+        
+        var duration: Double
         
         var degree: Double
         
         var anchor: UnitPoint
-        
-        var duration: Double
         
         func body(content: Content) -> some View {
             content
