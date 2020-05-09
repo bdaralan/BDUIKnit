@@ -71,13 +71,19 @@ A tray-like view that is normally pinned to the bottom-trailing of a scene.
 
 Tray item now supports more animations.
 
+<p align="center">Regular Vertical Size Class</p>
+
 ![BDButtonTrayPreview-1][button-tray-preview]
 
-<p align="center">Regular Vertical Size Class</p>
+<p align="center">Compact Vertical Size Class</p>
 
 ![BDButtonTrayPreview-2][button-tray-preview-horizontal]
 
-<p align="center">Compact Vertical Size Class</p>
+<p align="center">Tray Item Animations</p>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/21166606/81464720-f7570600-9178-11ea-8931-b8aeabea4b4a.gif" width="200" alt="BDButtonTrayItemAnimation" />
+</p>
 
 **Quick Start:**
 
