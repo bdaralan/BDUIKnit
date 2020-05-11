@@ -12,7 +12,10 @@ import Foundation
 ///
 /// See `BDSystemPersistentStore` for supported system stores.
 ///
-/// - Note: The wrapper also post a notification on value changed. This one is inspired by one of Apple's example codes (I lost the link, will add when I found it).
+/// - Note: The wrapper also post a notification on value changed. This one is inspired by one of Apple's example codes [here][link].
+///
+/// [link]: https://developer.apple.com/documentation/exposurenotification/building_an_app_to_notify_users_of_covid-19_exposure
+///
 @propertyWrapper
 public struct BDPersist<Value> {
     

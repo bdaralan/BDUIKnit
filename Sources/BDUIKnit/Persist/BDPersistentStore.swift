@@ -10,6 +10,8 @@ import Foundation
 
 // MARK: - Persistent Store
 
+/// A protocol that makes a conforming object a persistent store.
+///
 public protocol BDPersistentStore {
     
     func setValue(_ value: Any?, forKey key: String)
@@ -18,60 +20,65 @@ public protocol BDPersistentStore {
 }
 
 
-// MARK: - System Store
+// MARK: - System Persistent Store
 
+/// System persistent store type.
+///
 public enum BDSystemPersistentStore {
     
-    /// For supported types see [UserDefaults][link].
+    /// Stores value in `UserDefaults`.
+    ///
+    /// For supported value types see [UserDefaults][link].
     ///
     /// [link]: https://developer.apple.com/documentation/foundation/userdefaults
     case userDefaults
     
-    /// For supported types see [NSUbiquitousKeyValueStore][link].
+    /// Store value in `NSUbiquitousKeyValueStore`.
+    ///
+    /// For supported value types see [NSUbiquitousKeyValueStore][link].
     ///
     /// - Important: MUST enable iCloud's key value pairs in **Signing & Capabilities**.
     ///
     /// [link]: https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore
     case ubiquitousStore
     
-    // TODO: add keychain support or leave it to developers to create their own by conforming to BDPersistentStore
-    // case keychain
     
-    
-    var store: BDPersistentStore {
+    public var store: BDPersistentStore {
         switch self {
-        case .userDefaults: return BDUserDefaultsPersistentStore()
-        case .ubiquitousStore: return BDUbiquitousPersistentStore()
+        case .userDefaults: return UserDefaultsStore()
+        case .ubiquitousStore: return UbiquitousStore()
         }
     }
 }
 
 
-// MARK: - UserDefaults Store
+fileprivate extension BDSystemPersistentStore {
 
-fileprivate struct BDUserDefaultsPersistentStore: BDPersistentStore {
+    // MARK: UserDefaults Store
     
-    func setValue(_ value: Any?, forKey key: String) {
-        UserDefaults.standard.set(value, forKey: key)
+    struct UserDefaultsStore: BDPersistentStore {
+        
+        func setValue(_ value: Any?, forKey key: String) {
+            UserDefaults.standard.set(value, forKey: key)
+        }
+        
+        func getValue(forKey key: String) -> Any? {
+            UserDefaults.standard.object(forKey: key)
+        }
     }
     
-    func getValue(forKey key: String) -> Any? {
-        UserDefaults.standard.object(forKey: key)
-    }
-}
-
-
-// MARK: - Ubiquitous Store
-
-fileprivate struct BDUbiquitousPersistentStore: BDPersistentStore {
+    // MARK: Ubiquitous Store
     
-    func setValue(_ value: Any?, forKey key: String) {
-        let store = NSUbiquitousKeyValueStore.default
-        store.set(value, forKey: key)
-        store.synchronize()
-    }
-    
-    func getValue(forKey key: String) -> Any? {
-        NSUbiquitousKeyValueStore.default.object(forKey: key)
+    struct UbiquitousStore: BDPersistentStore {
+        
+        func setValue(_ value: Any?, forKey key: String) {
+            let store = NSUbiquitousKeyValueStore.default
+            store.set(value, forKey: key)
+            store.synchronize()
+        }
+        
+        func getValue(forKey key: String) -> Any? {
+            NSUbiquitousKeyValueStore.default.object(forKey: key)
+        }
     }
 }
