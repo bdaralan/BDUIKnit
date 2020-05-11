@@ -185,13 +185,11 @@ extension BDButtonTrayView {
     }
     
     func expandIndicator(systemImage: String, size: CGSize, padding: EdgeInsets) -> some View {
-        let action = {
+        Button(action: {
             let willExpand = self.viewModel.expanded == false
             self.viewModel.onTrayWillExpand?(willExpand)
             self.viewModel.expanded = willExpand
-        }
-        
-        return Button(action: action) {
+        }) {
             Image(systemName: systemImage)
                 .font(.system(size: 32))
                 .frame(width: size.width, height: size.height)
@@ -201,7 +199,6 @@ extension BDButtonTrayView {
                 .padding(padding)
                 .foregroundColor(viewModel.expandIndicatorColor)
         }
-        .disabled(viewModel.locked)
     }
     
     func trayExpandCollapseDragGesture() -> some Gesture {
