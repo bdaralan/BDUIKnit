@@ -298,7 +298,10 @@ extension BDButtonTrayView {
         VStack(spacing: itemSpacing) {
             VStack(alignment: .trailing, spacing: itemSpacing) {
                 ForEach(items) { item in
-                    self.trayItemLabel(title: item.title, textColor: self.getColor(for: item, disabled: item.disabled))
+                    self.trayItemLabel(
+                        title: item.title,
+                        textColor: self.getColor(for: item, disabled: item.disabled)
+                    )
                 }
             }
             .padding(.bottom, trayDiameter + 8 + 16) // mimic tray item buttons
@@ -306,11 +309,11 @@ extension BDButtonTrayView {
         .frame(maxWidth: .infinity, minHeight: 0)
         .opacity(viewModel.expanded ? 1 : 0)
         .offset(x: -(trayDiameter + 16))
-        .animation(.interactiveSpring(response: 0.5))
     }
     
     func trayItemLabel(title: String, textColor: Color) -> some View {
         Text(LocalizedStringKey(title))
+            .frame(maxWidth: 250)
             .frame(height: itemSize.height)
             .font(.system(size: 17, weight: .regular))
             .lineLimit(1)
