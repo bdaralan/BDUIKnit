@@ -23,12 +23,12 @@ public struct BDButtonTrayView: View {
     let itemSpacing: CGFloat = 40
     let itemSize: CGSize = .init(width: 30, height: 30)
     
-    var showMainItems: Bool {
-        viewModel.subitems.isEmpty
+    var showSubitems: Bool {
+        viewModel.subitems.isEmpty == false
     }
     
     var items: [BDButtonTrayItem] {
-        showMainItems ? viewModel.items : viewModel.subitems
+        showSubitems ? viewModel.subitems : viewModel.items
     }
     
     
@@ -66,7 +66,7 @@ public struct BDButtonTrayView: View {
             
             if viewModel.expanded {
                 VStack(spacing: itemSpacing) {
-                    if !showMainItems {
+                    if showSubitems {
                         backToMainItemsButton
                     }
                     trayItemButtons(items: items)
@@ -104,7 +104,7 @@ public struct BDButtonTrayView: View {
             
             if viewModel.expanded {
                 HStack(spacing: itemSpacing) {
-                    if !showMainItems {
+                    if showSubitems {
                         backToMainItemsButton
                     }
                     trayItemButtons(items: items)
@@ -156,6 +156,7 @@ extension BDButtonTrayView {
             inactiveColor: getColor(for: item, disabled: disabled)
         )
         .frame(width: diameter, height: diameter)
+        .contentShape(Circle())
         .background(background)
         .overlay(label, alignment: .trailing)
         .animation(.spring())
@@ -274,7 +275,7 @@ extension BDButtonTrayView {
         let action: (BDButtonTrayItem) -> Void = { item in
             self.viewModel.subitems = []
         }
-        let item = BDButtonTrayItem(title: "", systemImage: "xmark.circle", action: action)
+        let item = BDButtonTrayItem(title: "", image: .system("xmark.circle"), action: action)
         let color = viewModel.expandIndicatorColor
         return BDButtonTrayItemView(item: item, size: itemSize, activeColor: color, inactiveColor: color)
     }

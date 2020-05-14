@@ -90,22 +90,6 @@ public final class BDButtonTrayViewModel: ObservableObject {
     
     /// Create with default values.
     public init() {
-        mainItem = .init(title: "", systemImage: "circle") { item in
-            print("⚠️ The default main item does nothing, assign a new item ⚠️")
-        }
-    }
-    
-    
-    // MARK: Method
-    
-    /// Tell the view to apply UI changes.
-    ///
-    /// Use this method when want to make UI changes at runtime
-    /// when modifying properties that are not marked with `@Published`.
-    ///
-    /// - Note: This is the same as calling `objectWillChange.send()`. 😬
-    @available(*, deprecated, message: "Since all properties are now marked with @Published, calling this is not required.")
-    public func applyChanges() {
-        objectWillChange.send()
+        mainItem = .init(title: "", image: .system("star.circle"), action: { _ in })
     }
 }

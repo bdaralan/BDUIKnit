@@ -12,7 +12,7 @@
 <!-- omit in toc -->
 # BDUIKnit
 
-BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions packed in a Swift Package Manager.
+BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions packed in a Swift Package. The package is fully documented with some exceptions of internal objects or objects that developer will not be interacting with.
 
 - [Goals](#goals)
 - [Get Started](#get-started)
@@ -26,9 +26,9 @@ BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions
 
 ## Goals
 
-- To collect my personal custom reusable UI and extensions and put them in one place.
-- To create custom reusable UI and share them.
-- To learn and share what I learnt building these UI & extensions.
+- To collect my personal custom reusable UI components and extensions and put them in one place.
+- To create custom reusable UI components and share them.
+- To learn new techniques and share what I learnt building these UI & extensions.
 
 ## Get Started
 
@@ -44,7 +44,7 @@ To add BDUIKnit to your project:
 
 BDUIKnit follows **MVVM** design pattern; therefore, most **Views** will have their corresponding **View Models**. View models are either `class` or `struct`, so use the appropriate `@ObservedObject`, `@State`, or `@Binding` as needed.
 
-New to **MVVM**? Fear not. Try to read the below codes, if you can guess what they are doing, you are ready to use BDUIKnit.
+New to **MVVM**? Fear not. Try to read the below codes, if you can guess what they are doing, you are ready to use BDUIKnit.  
 
 ``` Swift
 // create a view model that controls the tray view

@@ -11,6 +11,7 @@ import SwiftUI
 // MARK: - Animation
 
 /// An animation for `BDButtonTrayItem`.
+///
 public enum BDButtonTrayItemAnimation {
     
     /// Pulse animation.
@@ -21,38 +22,18 @@ public enum BDButtonTrayItemAnimation {
     /// Spin animation.
     ///
     /// The duration is a duration of one cycle.
-    case rotation(duration: Double = 1.4)
+    case rotation(duration: Double = 0.9)
     
     /// Tilt animation.
     ///
     /// The duration is a duration of tiling back and forth.
     case tilt(duration: Double = 0.4, degree: Double = 14, anchor: UnitPoint = .center)
-    
-    
-    /// Make animation view using view modifier.
-    ///
-    /// - Parameter itemImage: The tray item's image view.
-    ///
-    /// - Returns: An animating view.
-    func makeAnimationView(itemImage: AnyView) -> some View {
-        switch self {
-        
-        case let .pulse(duration):
-            return AnyView(itemImage.modifier(PulseModifier(duration: duration)))
-        
-        case let .rotation(duration):
-            return AnyView(itemImage.modifier(RotationModifier(duration: duration)))
-        
-        case let .tilt(duration, degree, anchor):
-            return AnyView(itemImage.modifier(TiltModifier(duration: duration, degree: degree, anchor: anchor)))
-        }
-    }
 }
 
 
 // MARK: Animation Modifier
 
-fileprivate extension BDButtonTrayItemAnimation {
+extension BDButtonTrayItemAnimation {
     
     struct PulseModifier: ViewModifier {
         

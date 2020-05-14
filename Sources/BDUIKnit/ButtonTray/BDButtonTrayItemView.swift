@@ -23,22 +23,38 @@ struct BDButtonTrayItemView: View {
     
     var body: some View {
         Button(action: action) {
-            VStack {
-                if item.animation != nil {
-                    item.animation!.makeAnimationView(itemImage: AnyView(image))
-                } else {
-                    image
-                }
-            }
-            .transition(AnyTransition.opacity)
-            .animation(nil) /** use these two to make sure animation starts without a split-second fading **/
+            animatingImageView
         }
         .disabled(item.disabled)
     }
     
     
-    var image: some View {
-        Image(systemName: item.systemImage)
+    var animatingImageView: some View {
+        switch item.animation {
+            
+        case nil:
+            return AnyView(imageView)
+        
+        case let .pulse(duration):
+            return AnyView(imageView.modifier(BDButtonTrayItemAnimation.PulseModifier(duration: duration)))
+        
+        case let .rotation(duration):
+            return AnyView(imageView.modifier(BDButtonTrayItemAnimation.RotationModifier(duration: duration)))
+        
+        case let .tilt(duration, degree, anchor):
+            return AnyView(imageView.modifier(BDButtonTrayItemAnimation.TiltModifier(duration: duration, degree: degree, anchor: anchor)))
+        }
+    }
+    
+    var imageView: some View {
+        let image: Image
+        
+        switch item.image {
+        case let .system(name): image = Image(systemName: name)
+        case let .asset(name): image = Image(name)
+        }
+        
+        return image
             .resizable()
             .scaledToFit()
             .frame(width: size.width, height: size.height)

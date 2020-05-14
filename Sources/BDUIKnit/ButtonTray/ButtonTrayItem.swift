@@ -22,22 +22,16 @@ public final class BDButtonTrayItem: ObservableObject, Identifiable {
     /// The item's title or name.
     @Published public var title: String
     
-    /// The item's SFSymbol.
-    @Published public var systemImage: String
-    
-    /// The value indicate whether the item should be disabled.
-    @Published public var disabled: Bool
-    
-    /// A value indicates whether the item should be animated.
-    ///
-    /// Use this to draw user's attention or to signify an important action.
-    @available(*, deprecated, message: "animated property is deprecated use animation property")
-    @Published public var animated = false
+    /// The item's image.
+    @Published public var image: BDButtonTrayItemImage
     
     /// A value indicate whether the item should be animated.
     ///
     /// See `BDButtonTrayItemAnimation` for each animation's details.
     @Published public var animation: BDButtonTrayItemAnimation?
+    
+    /// The value indicate whether the item should be disabled.
+    @Published public var disabled: Bool
     
     /// The color for item when active.
     @Published public var activeColor: Color?
@@ -46,28 +40,28 @@ public final class BDButtonTrayItem: ObservableObject, Identifiable {
     @Published public var inactiveColor: Color?
     
     /// The action to perform when the item is triggered.
-    public let action: (BDButtonTrayItem) -> Void
-    
-    
-    // MARK: Constructor
+    @Published public var action: (BDButtonTrayItem) -> Void
     
     /// Create a tray item.
     /// - Parameters:
     ///   - id: A unique ID to identify the item.
     ///   - title: The item's title or name.
-    ///   - systemImage: The item's SFSymbol.
+    ///   - image: The item's image.
+    ///   - animation: The item's animation.
     ///   - disabled: The value indicate whether the item should be disabled.
     ///   - action: The action to perform when the item is triggered.
     public init(
         id: String = UUID().uuidString,
         title: String,
-        systemImage: String,
+        image: BDButtonTrayItemImage,
+        animation: BDButtonTrayItemAnimation? = nil,
         disabled: Bool = false,
         action: @escaping (BDButtonTrayItem) -> Void
     ) {
         self.id = id
         self.title = title
-        self.systemImage = systemImage
+        self.image = image
+        self.animation = animation
         self.disabled = disabled
         self.action = action
     }
