@@ -20,6 +20,20 @@ public protocol BDPersistentStore {
 }
 
 
+// MARK: Setter & Getter for BDPersistKey
+
+extension BDPersistentStore {
+    
+    public func setValue(_ value: Any?, forKey key: BDPersistKey) {
+        setValue(value, forKey: key.prefixedKey)
+    }
+    
+    public func getValue(forKey key: BDPersistKey) -> Any? {
+        getValue(forKey: key.prefixedKey)
+    }
+}
+
+
 // MARK: - System Persistent Store
 
 /// System persistent store type.
