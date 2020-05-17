@@ -11,6 +11,12 @@ import XCTest
 
 final class BDPersistTests: XCTestCase {
     
+    enum Keys: BDPersistKey {
+        var prefix: String { "bduiknit." }
+        case username
+        case profileImageUrl
+    }
+    
     static let nUsernameDidChange = Notification.Name("nUsernameDidChange")
     
     static let nProfileImageUrlDidChange = Notification.Name("nProfileImageUrlDidChange")
@@ -21,6 +27,12 @@ final class BDPersistTests: XCTestCase {
     @BDPersist(in: .userDefaults, key: "profileImageUrl", default: nil, post: nProfileImageUrlDidChange)
     var profileImageUrl: String?
     
+    @BDPersist(in: .userDefaults, key: Keys.username, default: "", post: nUsernameDidChange)
+    var usernameUsingKey: String
+    
+    @BDPersist(in: .userDefaults, key: Keys.profileImageUrl, default: nil, post: nProfileImageUrlDidChange)
+    var profileImageUrlUsingKey: String?
+    
     
     override func setUp() {
         super.setUp()
@@ -29,7 +41,7 @@ final class BDPersistTests: XCTestCase {
     }
     
     
-    func testWrapperSetterGetter() {
+    func testWrapperSetterGetterStringKey() {
         // default value
         XCTAssertEqual(username, "")
         XCTAssertNil(profileImageUrl)
@@ -48,5 +60,26 @@ final class BDPersistTests: XCTestCase {
         profileImageUrl = nil
         wait(for: [profileImageUrlChangedNotification2], timeout: 1)
         XCTAssertNil(profileImageUrl)
+    }
+    
+    func testWrapperSetterGetterBDPersistKey() {
+        // default value
+        XCTAssertEqual(usernameUsingKey, "")
+        XCTAssertNil(profileImageUrlUsingKey)
+        
+        let usernameChangedNotification = XCTNSNotificationExpectation(name: Self.nUsernameDidChange)
+        usernameUsingKey = "bdaralanKey"
+        wait(for: [usernameChangedNotification], timeout: 1)
+        XCTAssertEqual(usernameUsingKey, "bdaralanKey")
+        
+        let profileImageUrlChangedNotification1 = XCTNSNotificationExpectation(name: Self.nProfileImageUrlDidChange)
+        profileImageUrlUsingKey = "some.image.url.key"
+        wait(for: [profileImageUrlChangedNotification1], timeout: 1)
+        XCTAssertEqual(profileImageUrlUsingKey, "some.image.url.key")
+        
+        let profileImageUrlChangedNotification2 = XCTNSNotificationExpectation(name: Self.nProfileImageUrlDidChange)
+        profileImageUrlUsingKey = nil
+        wait(for: [profileImageUrlChangedNotification2], timeout: 1)
+        XCTAssertNil(profileImageUrlUsingKey)
     }
 }

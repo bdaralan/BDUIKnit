@@ -24,6 +24,8 @@ public protocol BDPersistentStore {
 
 /// System persistent store type.
 ///
+/// - Tag: BDSystemPersistentStore
+///
 public enum BDSystemPersistentStore {
     
     /// Stores value in `UserDefaults`.
