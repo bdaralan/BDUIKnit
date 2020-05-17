@@ -16,13 +16,13 @@ BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions
 
 - [Goals](#goals)
 - [Get Started](#get-started)
-  - [Installation](#installation)
-  - [Quick Introduction](#quick-introduction)
-  - [BDButtonTrayView](#bdbuttontrayview)
-  - [BDModalTextField](#bdmodaltextfield)
-  - [BDModalTextView](#bdmodaltextview)
-  - [BDPersist Property Wrapper](#bdpersist-property-wrapper)
-  - [Extension](#extension)
+	- [Installation](#installation)
+	- [Quick Introduction](#quick-introduction)
+	- [BDButtonTrayView](#bdbuttontrayview)
+	- [BDModalTextField](#bdmodaltextfield)
+	- [BDModalTextView](#bdmodaltextview)
+	- [BDPersist Property Wrapper](#bdpersist-property-wrapper)
+	- [Extension](#extension)
 
 ## Goals
 
@@ -44,7 +44,7 @@ To add BDUIKnit to your project:
 
 BDUIKnit follows **MVVM** design pattern; therefore, most **Views** will have their corresponding **View Models**. View models are either `class` or `struct`, so use the appropriate `@ObservedObject`, `@State`, or `@Binding` as needed.
 
-New to **MVVM**? Fear not. Try to read the below codes, if you can guess what they are doing, you are ready to use BDUIKnit.  
+New to **MVVM**? Fear not. Try to read the below codes, if you can guess what they are doing, you are ready to use BDUIKnit.
 
 ``` Swift
 // create a view model that controls the tray view
@@ -58,11 +58,13 @@ trayViewModel.shouldDisableMainItemWhenExpanded = true
 trayViewModel.trayColor = Color(.systemBackground)
 trayViewModel.itemActiveColor = Color.accentColor
 
-// pass the view model to the view
+// pass the view model to the tray view to render
 BDButtonTrayView(viewModel: trayViewModel)
 
-// application is running, update the view model
-trayViewModel.expanded = false // the tray view is now collapsed
+// while the tray view is displaying, update the view model
+trayViewModel.expanded = false
+
+// the tray view is now collapsed
 ```
 
 ### BDButtonTrayView
@@ -126,22 +128,51 @@ A property wrapper that stores value in a given store. For example, `UserDefault
 **Quick Start:**
 
 - [`BDPersist`][BDPersist.swift]
+- [`BDPersistKey`][BDPersistKey.swift]
 - [`BDSystemPersistentStore`][BDPersistentStore.swift]
 
 ``` Swift
 // Store username in UserDefaults
+
 @BDPersist(in: .userDefaults, key: "username", default: "")
 var username: String
+```
 
+``` Swift
 // Add post notification when username changed
+
 static let nUsernameDidChange = Notification.Name("nUsernameDidChange")
 
 @BDPersist(in: .userDefaults, key: "username", default: "", post: nUsernameDidChange)
 var username: String
+```
 
-// Support Optional Value
+``` Swift
+// Use optional value and NSUbiquitousKeyValueStore (see docs how to enable)
+
 @BDPersist(in: .ubiquitousStore, key: "highScore", default: nil)
 var highScore: Int?
+```
+
+``` Swift
+// Use type-safe key
+
+// create an enum
+// conform to BDPersistKey
+// implement the required prefix property
+enum Keys: BDPersistKey {
+	var prefix: String { "some.prefix." }
+	case autoplay
+	case autosave
+}
+
+// the key is 'some.prefix.autoplay'
+@BDPersist(in: .userDefaults, key: Keys.autoplay, default: true)
+var autoplay: Bool
+
+// the key is 'some.prefix.autosave'
+@BDPersist(in: .userDefaults, key: Keys.autosave, default: false)
+var autosave: Bool
 ```
 
 For sample code, see [`PersistPropertyWrapperPreview`][PersistPropertyWrapperPreview.swift]
@@ -175,6 +206,8 @@ UIColor(hex: "purple") // fatal error: create color with invalid hex: 'purple'
 [BDModalTextView.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/ModalTextView/BDModalTextView.swift
 
 [BDPersist.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/Persist/BDPersist.swift
+
+[BDPersistKey.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/Persist/BDPersistKey.swift
 
 [BDPersistentStore.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/Persist/BDPersistentStore.swift
 
