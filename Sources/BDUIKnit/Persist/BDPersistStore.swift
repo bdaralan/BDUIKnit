@@ -8,39 +8,11 @@
 import Foundation
 
 
-// MARK: - Persistent Store
-
-/// A protocol that makes a conforming object a persistent store.
+/// `BDPersist`'s persistent store type.
 ///
-public protocol BDPersistentStore {
-    
-    func setValue(_ value: Any?, forKey key: String)
-    
-    func getValue(forKey key: String) -> Any?
-}
-
-
-// MARK: Setter & Getter for BDPersistKey
-
-extension BDPersistentStore {
-    
-    public func setValue(_ value: Any?, forKey key: BDPersistKey) {
-        setValue(value, forKey: key.prefixedKey)
-    }
-    
-    public func getValue(forKey key: BDPersistKey) -> Any? {
-        getValue(forKey: key.prefixedKey)
-    }
-}
-
-
-// MARK: - System Persistent Store
-
-/// System persistent store type.
+/// - Tag: BDPersistStore
 ///
-/// - Tag: BDSystemPersistentStore
-///
-public enum BDSystemPersistentStore {
+public enum BDPersistStore {
     
     /// Stores value in `UserDefaults`.
     ///
@@ -58,21 +30,53 @@ public enum BDSystemPersistentStore {
     /// [link]: https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore
     case ubiquitousStore
     
+    /// Store value in the given store.
+    ///
+    /// Use this to store value in your own custom store.
+    case custom(BDPersistStorable)
     
-    public var store: BDPersistentStore {
+    
+    public var instance: BDPersistStorable {
         switch self {
         case .userDefaults: return UserDefaultsStore()
         case .ubiquitousStore: return UbiquitousStore()
+        case .custom(let store): return store
         }
     }
 }
 
 
-fileprivate extension BDSystemPersistentStore {
+// MARK: - Persistent Store Protocol
 
-    // MARK: UserDefaults Store
+/// A protocol that makes the conforming object a persistent store.
+///
+public protocol BDPersistStorable {
     
-    struct UserDefaultsStore: BDPersistentStore {
+    func setValue(_ value: Any?, forKey key: String)
+    
+    func getValue(forKey key: String) -> Any?
+}
+
+
+// MARK: Setter & Getter for BDPersistKey
+
+extension BDPersistStorable {
+    
+    public func setValue(_ value: Any?, forKey key: BDPersistKey) {
+        setValue(value, forKey: key.prefixedKey)
+    }
+    
+    public func getValue(forKey key: BDPersistKey) -> Any? {
+        getValue(forKey: key.prefixedKey)
+    }
+}
+
+
+// MARK: - System Store
+
+fileprivate extension BDPersistStore {
+    
+    struct UserDefaultsStore: BDPersistStorable {
         
         func setValue(_ value: Any?, forKey key: String) {
             UserDefaults.standard.set(value, forKey: key)
@@ -83,9 +87,7 @@ fileprivate extension BDSystemPersistentStore {
         }
     }
     
-    // MARK: Ubiquitous Store
-    
-    struct UbiquitousStore: BDPersistentStore {
+    struct UbiquitousStore: BDPersistStorable {
         
         func setValue(_ value: Any?, forKey key: String) {
             let store = NSUbiquitousKeyValueStore.default

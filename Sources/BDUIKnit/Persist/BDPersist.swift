@@ -12,7 +12,7 @@ import Foundation
 ///
 /// - Note: The wrapper also post a notification on value changed. This one is inspired by one of Apple's example codes [here][link].
 ///
-/// - See [BDSystemPersistentStore](x-source-tag://BDSystemPersistentStore) for supported system stores.
+/// - See [BDPersistStore](x-source-tag://BDPersistStore) for supported system stores.
 /// - See [BDPersistKey](x-source-tag://BDPersistKey) for type-safe key.
 ///
 /// [link]: https://developer.apple.com/documentation/exposurenotification/building_an_app_to_notify_users_of_covid-19_exposure
@@ -20,12 +20,16 @@ import Foundation
 @propertyWrapper
 public struct BDPersist<Value> {
     
-    let store: BDPersistentStore
+    /// The store that will persist the value.
+    let store: BDPersistStorable
     
+    /// The key to retrieve the value from the store.
     let key: String
     
+    /// The default value if the value doesn't exist in the store.
     let defaultValue: Value
     
+    /// The notification name to post when the value is set.
     let notificationName: Notification.Name?
     
     
@@ -43,12 +47,17 @@ public struct BDPersist<Value> {
     /// - Note: The posted notification contains the new value (not the default value) in the `object` property.
     ///
     /// - Parameters:
-    ///   - store: A store that will persist the value.
-    ///   - key: A key to retrieve the value from the store.
-    ///   - value: A default value if the value doesn't exist in the store.
-    ///   - name: A notification name to post when the value is set.
-    public init(in store: BDPersistentStore, key: String, default value: Value, post name: Notification.Name? = nil) {
-        self.store = store
+    ///   - store: The store that will persist the value.
+    ///   - key: The key to retrieve the value from the store.
+    ///   - value: The default value if the value doesn't exist in the store.
+    ///   - name: The notification name to post when the value is set.
+    public init(
+        in store: BDPersistStore,
+        key: String,
+        default value: Value,
+        post name: Notification.Name? = nil
+    ) {
+        self.store = store.instance
         self.key = key.description
         self.defaultValue = value
         self.notificationName = name
@@ -59,38 +68,17 @@ public struct BDPersist<Value> {
     /// - Note: The posted notification contains the new value (not the default value) in the `object` property.
     ///
     /// - Parameters:
-    ///   - store: A system store that will persist the value.
-    ///   - key: A key to retrieve the value from the store.
-    ///   - value: A default value if the value doesn't exist in the store.
-    ///   - name: A notification name to post when the value is set.
-    public init(in store: BDPersistentStore, key: BDPersistKey, default value: Value, post name: Notification.Name? = nil) {
+    ///   - store: The store that will persist the value.
+    ///   - key: The key to retrieve the value from the store.
+    ///   - value: The default value if the value doesn't exist in the store.
+    ///   - name: The notification name to post when the value is set.
+    public init(
+        in store: BDPersistStore,
+        key: BDPersistKey,
+        default value: Value,
+        post name: Notification.Name? = nil
+    ) {
         self.init(in: store, key: key.prefixedKey, default: value, post: name)
-    }
-    
-    /// Create persist wrapper.
-    ///
-    /// - Note: The posted notification contains the new value (not the default value) in the `object` property.
-    ///
-    /// - Parameters:
-    ///   - system: A system store that will persist the value.
-    ///   - key: A key to retrieve the value from the store.
-    ///   - value: A default value if the value doesn't exist in the store.
-    ///   - name: A notification name to post when the value is set.
-    public init(in system: BDSystemPersistentStore, key: String, default value: Value, post name: Notification.Name? = nil) {
-        self.init(in: system.store, key: key, default: value, post: name)
-    }
-    
-    /// Create persist wrapper.
-    ///
-    /// - Note: The posted notification contains the new value (not the default value) in the `object` property.
-    ///
-    /// - Parameters:
-    ///   - system: A system store that will persist the value.
-    ///   - key: A key to retrieve the value from the store.
-    ///   - value: A default value if the value doesn't exist in the store.
-    ///   - name: A notification name to post when the value is set.
-    public init(in system: BDSystemPersistentStore, key: BDPersistKey, default value: Value, post name: Notification.Name? = nil) {
-        self.init(in: system.store, key: key.prefixedKey, default: value, post: name)
     }
     
     
@@ -107,8 +95,8 @@ public struct BDPersist<Value> {
     
     /// Get the value from the store.
     private func getValue() -> Value {
-        guard let value = store.getValue(forKey: key) as? Value else { return defaultValue }
-        return value
+        let value = store.getValue(forKey: key) as? Value
+        return value ?? defaultValue
     }
     
     /// Check whether the generic object is an optional type and its value is `nil`.

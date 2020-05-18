@@ -7,28 +7,31 @@
     <a href="https://swift.org/package-manager">
         <img src="https://img.shields.io/badge/swiftpm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
     </a>
+    <a href="https://twitter.com/bdaralan">
+        <img src="https://img.shields.io/badge/twitter-@bdaralan-1DA1F2.svg?style=flat" alt="Twitter" />
+    </a>
 </p>
 
 <!-- omit in toc -->
 # BDUIKnit
 
-BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions packed in a Swift Package. The package is fully documented with some exceptions of internal objects or objects that developer will not be interacting with.
+BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions packed in a Swift Package. BDUIKnit is completely written in Swift with no dependencies. The package is fully documented with some exceptions of internal objects.
 
 - [Goals](#goals)
 - [Get Started](#get-started)
-	- [Installation](#installation)
-	- [Quick Introduction](#quick-introduction)
-	- [BDButtonTrayView](#bdbuttontrayview)
-	- [BDModalTextField](#bdmodaltextfield)
-	- [BDModalTextView](#bdmodaltextview)
-	- [BDPersist Property Wrapper](#bdpersist-property-wrapper)
-	- [Extension](#extension)
+  - [Installation](#installation)
+  - [Quick Introduction](#quick-introduction)
+  - [BDButtonTrayView](#bdbuttontrayview)
+  - [BDModalTextField](#bdmodaltextfield)
+  - [BDModalTextView](#bdmodaltextview)
+  - [BDPersist Property Wrapper](#bdpersist-property-wrapper)
+  - [Extension](#extension)
 
 ## Goals
 
 - To collect my personal custom reusable UI components and extensions and put them in one place.
 - To create custom reusable UI components and share them.
-- To learn new techniques and share what I learnt building these UI & extensions.
+- To explore, learn new techniques, and share what I learnt building these components & extensions.
 
 ## Get Started
 
@@ -38,13 +41,13 @@ To add BDUIKnit to your project:
 
 - Open your project in Xcode
 - Go to `File > Swift Packages > Add Package Dependency...`
-- Search for BDUIKnit and follow Xcode's installation dialog.
+- Search for `BDUIKnit` and follow Xcode's installation dialogs.
 
 ### Quick Introduction
 
 BDUIKnit follows **MVVM** design pattern; therefore, most **Views** will have their corresponding **View Models**. View models are either `class` or `struct`, so use the appropriate `@ObservedObject`, `@State`, or `@Binding` as needed.
 
-New to **MVVM**? Fear not. Try to read the below codes, if you can guess what they are doing, you are ready to use BDUIKnit.
+New to **MVVM**? Fear not. Try to read the below codes, if you can make sense of what they are doing, you are ready to use BDUIKnit.
 
 ``` Swift
 // create a view model that controls the tray view
@@ -129,7 +132,7 @@ A property wrapper that stores value in a given store. For example, `UserDefault
 
 - [`BDPersist`][BDPersist.swift]
 - [`BDPersistKey`][BDPersistKey.swift]
-- [`BDSystemPersistentStore`][BDPersistentStore.swift]
+- [`BDPersistStore`][BDPersistStore.swift]
 
 ``` Swift
 // Store username in UserDefaults
@@ -148,7 +151,8 @@ var username: String
 ```
 
 ``` Swift
-// Use optional value and NSUbiquitousKeyValueStore (see docs how to enable)
+// Use optional value and NSUbiquitousKeyValueStore
+// see docs for how to enable ubiquitous store
 
 @BDPersist(in: .ubiquitousStore, key: "highScore", default: nil)
 var highScore: Int?
@@ -161,9 +165,9 @@ var highScore: Int?
 // conform to BDPersistKey
 // implement the required prefix property
 enum Keys: BDPersistKey {
-	var prefix: String { "some.prefix." }
-	case autoplay
-	case autosave
+    var prefix: String { "some.prefix." }
+    case autoplay
+    case autosave
 }
 
 // the key is 'some.prefix.autoplay'
@@ -173,6 +177,19 @@ var autoplay: Bool
 // the key is 'some.prefix.autosave'
 @BDPersist(in: .userDefaults, key: Keys.autosave, default: false)
 var autosave: Bool
+```
+
+``` Swift
+// Use custom store
+
+// conform to BDPersistStorable
+// implement required methods
+class CustomStore: BDPersistStorable {
+    // implementations...
+}
+
+@BDPersist(in: .custom(CustomStore()), key: "username", default: "")
+var username: String
 ```
 
 For sample code, see [`PersistPropertyWrapperPreview`][PersistPropertyWrapperPreview.swift]
@@ -209,7 +226,7 @@ UIColor(hex: "purple") // fatal error: create color with invalid hex: 'purple'
 
 [BDPersistKey.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/Persist/BDPersistKey.swift
 
-[BDPersistentStore.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/Persist/BDPersistentStore.swift
+[BDPersistStore.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/Persist/BDPersistStore.swift
 
 <!-- Preview File Link -->
 
