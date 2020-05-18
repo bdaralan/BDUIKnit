@@ -8,6 +8,8 @@
 import SwiftUI
 
 
+/// A view model for `BDModalTextView`.
+///
 public struct BDModalTextViewModel {
     
     // MARK: Property

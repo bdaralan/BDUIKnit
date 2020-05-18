@@ -8,6 +8,8 @@
 import SwiftUI
 
 
+/// A text view that should be used as a sheet to get input.
+///
 public struct BDModalTextView: View {
     
     @Binding var viewModel: BDModalTextViewModel

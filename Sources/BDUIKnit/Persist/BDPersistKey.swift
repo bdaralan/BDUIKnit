@@ -9,21 +9,9 @@ import Foundation
 
 /// A convenient protocol used declare type-safe keys when using `BDPersist`.
 ///
-/// Example of using `BDPersistKey` with user preference object.
+/// See sample code in [README][link]
 ///
-///     struct UserPreference {
-///
-///         enum Keys: BDPersistKey {
-///             var prefix: String { "kUserPreference." }
-///             case autoplay
-///         }
-///
-///         // Keys.autoplay here will turn into string "kUserPreference.autoplay".
-///         @BDPersist(in: .userDefaults, key: Keys.autoplay, default: true)
-///         var autoplay: Bool
-///     }
-///
-/// - Tag: BDPersistKey
+/// [link]: https://github.com/iDara09/BDUIKnit#bdpersistkey
 ///
 public protocol BDPersistKey: CodingKey {
     

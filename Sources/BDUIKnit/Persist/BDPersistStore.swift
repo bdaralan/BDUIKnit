@@ -10,8 +10,6 @@ import Foundation
 
 /// `BDPersist`'s persistent store type.
 ///
-/// - Tag: BDPersistStore
-///
 public enum BDPersistStore {
     
     /// Stores value in `UserDefaults`.

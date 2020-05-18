@@ -12,39 +12,9 @@ import Foundation
 ///
 /// The object provides a way to keep track of current and previous item.
 ///
+/// See sample code in [README][link].
 ///
-/// Example code with Enum conforms to `Identifiable` or `BDPresentationSheetItem` protocol.
-///
-///     struct UserProfileView: View {
-///
-///         // conforms to `Identifiable` or a convenient `BDPresentationSheetItem`
-///         enum Sheet: BDPresentationSheetItem {
-///             case modalTextField
-///             case modalTextView
-///         }
-///
-///         @State private var sheet = BDPresentationItem<Sheet>()
-///
-///         var body: some View {
-///             Form {
-///                 Button("Edit Username") {
-///                     self.sheet.present(.modalTextField)
-///                 }
-///
-///                 Button("Edut UserBio") {
-///                     self.sheet.present(.modalTextView)
-///                 }
-///             }
-///             .sheet(item: $sheet.current, content: presentationSheet)
-///         }
-///
-///         func presentationSheet(for sheet: Sheet) -> some View {
-///             switch sheet {
-///                 case .modalTextField: return AnyView(...)
-///                 case .modalTextView: return AnyView(...)
-///             }
-///         }
-///     }
+/// [link]: https://github.com/iDara09/BDUIKnit#bdpresentationitem
 ///
 public struct BDPresentationItem<Item> where Item: Identifiable {
     

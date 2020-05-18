@@ -8,8 +8,6 @@
 import SwiftUI
 
 
-// MARK: - Animation
-
 /// An animation for `BDButtonTrayItem`.
 ///
 public enum BDButtonTrayItemAnimation {

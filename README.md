@@ -21,10 +21,12 @@ BDUIKnit is a collection of SwiftUI custom reusable UI components and extensions
 - [Get Started](#get-started)
   - [Installation](#installation)
   - [Quick Introduction](#quick-introduction)
+- [Documentations](#documentations)
   - [BDButtonTrayView](#bdbuttontrayview)
   - [BDModalTextField](#bdmodaltextfield)
   - [BDModalTextView](#bdmodaltextview)
   - [BDPersist Property Wrapper](#bdpersist-property-wrapper)
+  - [BDPresentationItem](#bdpresentationitem)
   - [Extension](#extension)
 
 ## Goals
@@ -70,6 +72,8 @@ trayViewModel.expanded = false
 // the tray view is now collapsed
 ```
 
+## Documentations
+
 ### BDButtonTrayView
 
 A tray-like view that is normally pinned to the bottom-trailing of a scene.
@@ -95,6 +99,33 @@ Tray item now supports more animations.
 - [`BDButtonTrayView`][BDButtonTrayView.swift]
 - [`BDButtonTrayViewModel`][BDButtonTrayViewModel.swift]
 - [`BDButtonTrayItem`][ButtonTrayItem.swift]
+
+``` Swift
+// Add tray view to a view when content ignores safe area
+
+struct SomeView: View {
+
+    @State private var trayViewModel = BDButtonTrayViewModel()
+
+    var body: some View {
+        ZStack {
+            SomeContent()
+                .edgesIgnoringSafeArea(.all)
+            Color.clear
+                .overlay(trayView, alignment: .bottomTrailing)
+        }
+        .onAppear(perform: setupOnAppear)
+    }
+
+    var trayView: some View {
+        BDButtonTrayView(viewModel: trayViewModel).padding(16)
+    }
+
+    func setupOnAppear() {
+        // setup tray view model...
+    }
+}
+```
 
 For sample code, see [`ButtonTrayViewPreview`][ButtonTrayViewPreview.swift]
 
@@ -194,10 +225,62 @@ var username: String
 
 For sample code, see [`PersistPropertyWrapperPreview`][PersistPropertyWrapperPreview.swift]
 
+### BDPresentationItem
+
+An object used to present sheet. It provide an easy way to store previous dismissed sheet if needed.
+
+**Quick Start**
+
+- [BDPresentationItem][BDPresentationItem.swift]
+- [BDPresentationSheetItem][BDPresentationItem.swift]
+
+``` Swift
+// Example code with Enum conforms to BDPresentationSheetItem
+
+struct UserProfileView: View {
+
+    // conform to BDPresentationSheetItem or Identifiable
+    enum Sheet: BDPresentationSheetItem {
+        case modalTextField
+        case modalTextView
+    }
+
+    @State private var sheet = BDPresentationItem<Sheet>()
+
+    var body: some View {
+        Form {
+            Button("Edit Username") {
+                self.sheet.present(.modalTextField)
+            }
+
+            Button("Edut UserBio") {
+                self.sheet.current = .modalTextView
+            }
+        }
+        .onAppear(perform: setupOnAppear)
+        .sheet(item: $sheet.current, content: presentationSheet)
+    }
+
+    func presentationSheet(for sheet: Sheet) -> some View {
+        switch sheet {
+        case .modalTextField: return AnyView(...)
+        case .modalTextView: return AnyView(...)
+        }
+    }
+
+    func setupOnAppear() {
+        // if need to access sheet.previous on dismissed
+        sheet.shouldStorePrevious = true
+    }
+}
+```
+
+For sample code, see [`PresentationItemPreview`][PresentationItemPreview.swift]
+
 ### Extension
 
 ``` Swift
-// Create Color from hex
+// Create color from hex
 
 Color(hex: "BDA12A") // a Color
 
@@ -228,6 +311,8 @@ UIColor(hex: "purple") // fatal error: create color with invalid hex: 'purple'
 
 [BDPersistStore.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/Persist/BDPersistStore.swift
 
+[BDPresentationItem.swift]: https://github.com/iDara09/BDUIKnit/blob/master/Sources/BDUIKnit/PresentationItem/BDPresentationItem.swift
+
 <!-- Preview File Link -->
 
 [ButtonTrayViewPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/ButtonTrayViewPreview.swift
@@ -237,6 +322,8 @@ UIColor(hex: "purple") // fatal error: create color with invalid hex: 'purple'
 [ModalTextViewPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/ModalTextViewPreview.swift
 
 [PersistPropertyWrapperPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/PersistPropertyWrapperPreview.swift
+
+[PresentationItemPreview.swift]: https://github.com/iDara09/BDProjects/blob/master/BDProjects/BDUIKnit%20Preview/PresentationItemPreview.swift
 
 <!-- Preview Image Link -->
 

@@ -10,12 +10,15 @@ import Foundation
 
 /// A property wrapper that stores value in a given store. For example, `UserDefaults`.
 ///
-/// - Note: The wrapper also post a notification on value changed. This one is inspired by one of Apple's example codes [here][link].
+/// See sample code in [README][link]
+///
+/// - Note: The wrapper also post a notification on value changed. This one is inspired by one of Apple's example codes [here][apple-link].
 ///
 /// - See [BDPersistStore](x-source-tag://BDPersistStore) for supported system stores.
 /// - See [BDPersistKey](x-source-tag://BDPersistKey) for type-safe key.
 ///
-/// [link]: https://developer.apple.com/documentation/exposurenotification/building_an_app_to_notify_users_of_covid-19_exposure
+/// [link]: https://github.com/iDara09/BDUIKnit#bdpersist-property-wrapper
+/// [apple-link]: https://developer.apple.com/documentation/exposurenotification/building_an_app_to_notify_users_of_covid-19_exposure
 ///
 @propertyWrapper
 public struct BDPersist<Value> {
@@ -58,7 +61,7 @@ public struct BDPersist<Value> {
         post name: Notification.Name? = nil
     ) {
         self.store = store.instance
-        self.key = key.description
+        self.key = key
         self.defaultValue = value
         self.notificationName = name
     }
