@@ -75,7 +75,7 @@ public struct BDPresentationItem<Item> where Item: Identifiable {
 
 // MARK: - Protocol for Sheet
 
-/// A convenient protocol intended to be use with enum.
+/// A convenient protocol intended to be used with enum.
 ///
 /// See `BDPresentationSheetItem`'s documentation for example code.
 ///

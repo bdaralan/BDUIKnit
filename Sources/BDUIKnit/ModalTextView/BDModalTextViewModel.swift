@@ -31,6 +31,14 @@ public struct BDModalTextViewModel {
     /// - Note: The value is used to inform the limit and does not enforce any input restrictions.
     public var characterLimit: Int?
     
+    /// The title of the commit button.
+    ///
+    /// The default is Done.
+    public var commitButtonTitle = "Done"
+    
+    
+    // MARK: Action
+    
     /// An action for *Cancel* button.
     ///
     /// The button is not visible if the value is not assigned.

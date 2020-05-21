@@ -36,6 +36,16 @@ public struct BDModalTextFieldModel {
     /// Set `true` to show X icons next to each token.
     public var showClearTokenIndicator = false
     
+    /// A value indicates maximum-allowed characters.
+    ///
+    /// - Note: The value is used to inform the limit and does not enforce any input restrictions.
+    public var characterLimit: Int?
+    
+    /// The title of the commit button.
+    ///
+    /// The default is Done.
+    public var commitButtonTitle = "Done"
+    
     /// A boolean value indicates whether the text field should be first responder.
     public var isFirstResponder = false
     
@@ -87,6 +97,12 @@ public struct BDModalTextFieldModel {
     
     /// The color of the token's clear indicator.
     public var tokenClearIndicatorColor: Color?
+    
+    /// The color when below or equal to the limit.
+    public var characterLimitColor: Color?
+    
+    /// The color when above the limit.
+    public var characterLimitWarningColor: Color?
     
     /// An action to perform when initializing the text field.
     ///

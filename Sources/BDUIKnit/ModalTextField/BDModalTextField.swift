@@ -24,9 +24,8 @@ public struct BDModalTextField: View {
     
     public var body: some View {
         VStack(spacing: 16) {
-            // MARK: Title & Text Field
+            // Title & Text Field
             VStack(alignment: .leading) {
-                
                 HStack(alignment: .firstTextBaseline) {
                     Text(viewModel.title)
                         .font(.largeTitle)
@@ -41,7 +40,7 @@ public struct BDModalTextField: View {
                         
                         viewModel.onCommit.map { action in
                             Button(action: action) {
-                                Text("Done").bold()
+                                Text(LocalizedStringKey(viewModel.commitButtonTitle)).bold()
                             }
                         }
                     }
@@ -60,11 +59,15 @@ public struct BDModalTextField: View {
                 )
                     .fixedSize(horizontal: false, vertical: true)
                 
-                Divider()
+                if viewModel.characterLimit != nil {
+                    makeCharacterLimitBar(limit: viewModel.characterLimit!)
+                } else {
+                    Divider()
+                }
             }
             .padding(.horizontal, 20)
             
-            // MARK: Prompt & Token
+            // Prompt & Token
             VStack(alignment: .leading, spacing: 16) {
                 if !viewModel.prompt.isEmpty {
                     Text(viewModel.prompt)
@@ -74,21 +77,7 @@ public struct BDModalTextField: View {
                 }
                 
                 if !viewModel.tokens.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 16) {
-                            ForEach(viewModel.tokens, id: \.self) { token in
-                                BDModalTextFieldTokenView(
-                                    token: token,
-                                    showClear: self.viewModel.showClearTokenIndicator,
-                                    color: self.viewModel.tokenColor,
-                                    backgroundColor: self.viewModel.tokenBackgroundColor,
-                                    clearColor: self.viewModel.tokenClearIndicatorColor,
-                                    onSelected: self.viewModel.onTokenSelected
-                                )
-                            }
-                        }
-                        .padding(.horizontal, 20)
-                    }
+                    tokenScrollView
                 }
             }
         }
@@ -96,14 +85,46 @@ public struct BDModalTextField: View {
         .padding(.vertical, 20)
         .overlay(dragHandle.padding(.top, 8), alignment: .top)
     }
-}
-
-
-extension BDModalTextField {
+    
+    
+    // MARK: Component
+    
+    func makeCharacterLimitBar(limit: Int) -> some View {
+        let textCount = viewModel.text.count
+        let regularColor = viewModel.characterLimitColor ?? .primary
+        let warningColor = viewModel.characterLimitWarningColor ?? .red
+        let warning = textCount > limit
+        let color = warning ? warningColor : regularColor
+        return VStack(spacing: 4) {
+            BDCharacterLimitBar(current: textCount, limit: limit, color: color, barHeight: 1)
+            BDCharacterLimitText(current: textCount, limit: limit, color: color)
+        }
+    }
+    
+    var tokenScrollView: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 16) {
+                ForEach(viewModel.tokens, id: \.self) { token in
+                    BDModalTextFieldTokenView(
+                        token: token,
+                        showClear: self.viewModel.showClearTokenIndicator,
+                        color: self.viewModel.tokenColor,
+                        backgroundColor: self.viewModel.tokenBackgroundColor,
+                        clearColor: self.viewModel.tokenClearIndicatorColor,
+                        onSelected: self.viewModel.onTokenSelected
+                    )
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+    }
     
     var dragHandle: some View {
         BDModalDragHandle(color: viewModel.titleColor ?? .primary, hideOnVerticalCompact: true)
     }
+    
+    
+    // MARK: Setup
     
     func configureTextField(_ textField: UITextField) {
         textField.font = .preferredFont(forTextStyle: .largeTitle)

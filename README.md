@@ -258,7 +258,12 @@ struct UserProfileView: View {
             }
         }
         .onAppear(perform: setupOnAppear)
-        .sheet(item: $sheet.current, content: presentationSheet)
+        .sheet(item: $sheet.current, onDismiss: sheetDismissed, content: presentationSheet)
+    }
+
+    func setupOnAppear() {
+        // if need to access sheet.previous on dismissed
+        sheet.shouldStorePrevious = true
     }
 
     func presentationSheet(for sheet: Sheet) -> some View {
@@ -268,9 +273,10 @@ struct UserProfileView: View {
         }
     }
 
-    func setupOnAppear() {
-        // if need to access sheet.previous on dismissed
-        sheet.shouldStorePrevious = true
+    func sheetDismissed() {
+        if sheet.previous == .modalTextField {
+            // do something
+        }
     }
 }
 ```
