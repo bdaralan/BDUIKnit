@@ -111,17 +111,15 @@ struct SomeView: View {
         ZStack {
             SomeContent()
                 .edgesIgnoringSafeArea(.all)
-            Color.clear
-                .overlay(trayView, alignment: .bottomTrailing)
+
+            BDButtonTrayView(viewModel: trayViewModel)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .padding(16)
+                .onAppear(perform: setupTrayViewModel)
         }
-        .onAppear(perform: setupOnAppear)
     }
 
-    var trayView: some View {
-        BDButtonTrayView(viewModel: trayViewModel).padding(16)
-    }
-
-    func setupOnAppear() {
+    func setupTrayViewModel() {
         // setup tray view model...
     }
 }
