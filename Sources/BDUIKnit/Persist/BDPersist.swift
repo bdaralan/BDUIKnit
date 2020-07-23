@@ -1,11 +1,11 @@
 //
 //  BDPersist.swift
-//  
+//
 //
 //  Created by Dara Beng on 5/8/20.
 //
 
-import Foundation
+import SwiftUI
 
 
 /// A property wrapper that stores value in a given store. For example, `UserDefaults`.
@@ -21,10 +21,10 @@ import Foundation
 /// [apple-link]: https://developer.apple.com/documentation/exposurenotification/building_an_app_to_notify_users_of_covid-19_exposure
 ///
 @propertyWrapper
-public struct BDPersist<Value> {
+public struct BDPersist<Value>: DynamicProperty {
     
     /// The store that will persist the value.
-    let store: BDPersistStorable
+    private let store: BDPersistStorable
     
     /// The key to retrieve the value from the store.
     let key: String
@@ -33,13 +33,18 @@ public struct BDPersist<Value> {
     let defaultValue: Value
     
     /// The notification name to post when the value is set.
-    let notificationName: Notification.Name?
+    private let notificationName: Notification.Name?
+    
+    /// The state object storing the current value.
+    ///
+    /// - Note: This object is used to triggered View's body when value changed.
+    private let state: State<Value>
     
     
     /// The value in the store or the given default value.
     public var wrappedValue: Value {
-        set { setValue(newValue) }
-        get { getValue() }
+        get { state.wrappedValue }
+        nonmutating set { updateStoreValue(newValue) }
     }
     
     
@@ -62,8 +67,13 @@ public struct BDPersist<Value> {
     ) {
         self.store = store.instance
         self.key = key
-        self.defaultValue = value
-        self.notificationName = name
+        defaultValue = value
+        notificationName = name
+        
+        // assign store's value to state, but if nil assign the default value
+        let stateValue = store.instance.getValue(forKey: key) as? Value ?? value
+        let isNilValue = Self.isValueOptionalAndNil(stateValue)
+        state = .init(initialValue: isNilValue ? value : stateValue)
     }
     
     /// Create persist wrapper.
@@ -88,26 +98,26 @@ public struct BDPersist<Value> {
     // MARK: Method
     
     /// Assign the value to the store.
-    /// - Parameter value: The value to assign.
-    private func setValue(_ value: Value) {
-        let isValueNil = isOptionalAndNil(value)
-        store.setValue(isValueNil ? nil : value, forKey: key)
+    ///
+    /// - Parameter value: The new value.
+    private func updateStoreValue(_ value: Value) {
+        let isNilValue = Self.isValueOptionalAndNil(value)
+        store.setValue(isNilValue ? nil : value, forKey: key)
+        state.wrappedValue = isNilValue ? defaultValue : value
         guard let name = notificationName else { return }
-        NotificationCenter.default.post(name: name, object: isValueNil ? nil : value)
+        NotificationCenter.default.post(name: name, object: isNilValue ? nil : value)
     }
-    
-    /// Get the value from the store.
-    private func getValue() -> Value {
-        let value = store.getValue(forKey: key) as? Value
-        return value ?? defaultValue
-    }
+}
+
+
+extension BDPersist {
     
     /// Check whether the generic object is an optional type and its value is `nil`.
     ///
-    /// - Parameter value: The value to check
+    /// - Parameter value: The value to check.
     ///
     /// - Returns: `true` if `value` is an `Optional` and `nil`.
-    private func isOptionalAndNil(_ value: Value) -> Bool {
+    static private func isValueOptionalAndNil(_ value: Value) -> Bool {
         // TODO: Update this if there is a better way. 😅
         
         // got the optional check from here:
